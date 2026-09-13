@@ -74,6 +74,20 @@ written only when asked, and the installer appends to whatever is already in
 
 </details>
 
+## Commands
+
+Installed with the plugin, so the scripts need no path and no remembering:
+
+| Command | What it does |
+| --- | --- |
+| `/nu-queue` | what is running, what is in flight, what is next — blocked rows marked |
+| `/nu-start NUC-142` | blockers → `in_progress` → timer, refusing rather than guessing |
+| `/nu-finish NUC-142` | stop the clock; `--done` closes it when nothing is still open |
+
+Both writing commands take `--anyway` for the case where the person can see
+the reason is stale — and it is written into the commands that an assistant
+must not reach for that flag on its own: a retry is not a decision.
+
 ## The key
 
 The scripts use the person's OWN key, read from `NUCLOCK_API_KEY` or from the
