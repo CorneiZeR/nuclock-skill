@@ -1,0 +1,11 @@
+{
+  "name": "nuclock",
+  "version": "1.0.0",
+  "description": "Working in the nuclock tracker: planning a backlog into a queue, seeing what is next and what is blocked, taking one task from start to done, and keeping the timer honest — start it when work starts, stop it when it stops, backfill what ran untracked. Ships hooks that warn (never block, never write time) and two commands that do the whole cycle.",
+  "author": {
+    "name": "Oleksii Kolosiuk"
+  },
+  "homepage": "https://github.com/CorneiZeR/nuclock-skill",
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": ["nuclock", "time-tracking", "mcp", "tasks", "timer"]
+}
