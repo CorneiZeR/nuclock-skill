@@ -133,6 +133,7 @@ scripts/nu-untracked.py --days 14 --repo ../nuclock_back
 ```bash
 tests/run.sh          # the hooks
 tests/commands.sh     # nu-start and nu-finish
+tests/tools.py        # every tool call the documents show
 ```
 
 The first is about the ways a hook can misbehave in somebody's editor:
@@ -144,7 +145,20 @@ timer already running on something else, `--done` while a merge request is
 open — and a refusal is only visible as a write that never happened, so the
 stub logs every one and the cases count them.
 
-Both run against a stub, so they need no key and no network.
+The third is about the prose. The skill teaches calls by name and argument —
+and it went on teaching `log_time` with a `date` after the server stopped
+taking one, so a model that followed it was refused.
+`tests/tool_schemas.json` is a copy of the server's own snapshot
+(`nuclock_back/mcp_server/tests/tool_schemas.json`); every `tool(args)` in the
+skill, the commands, the hooks and this README must use arguments the tool
+has, and all it requires unless it elides with `…`. The copy is then compared
+with what the live server publishes, so a server change never carried here
+fails this test rather than whoever follows the documents next. Without a key
+or a network that comparison says SKIPPED — which is not a pass.
+
+The first two run against a stub, so they need no key and no network. The
+third reads the documents offline and asks the live server only for the
+schema comparison.
 
 ## Everything written into nuclock is in English
 

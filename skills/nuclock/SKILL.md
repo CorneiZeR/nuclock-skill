@@ -162,9 +162,11 @@ later somebody writes "about two hours" into a form. What to do instead:
 * **`my_running_timer()` at the start of a session**, and at the start of any
   stretch of work. It costs one call and answers the only question that
   matters.
-* **When it was missed, backfill deliberately**: `log_time(task_id, date,
-  hours, note)` with a note saying what the hours were — "review fixes, merge,
-  deploy" — rather than a bare number. A note is what makes an hour
+* **When it was missed, backfill deliberately**: `log_time(task_id,
+  started_at, hours | ended_at, note)`: when the work began, with its offset
+  (`2026-10-10T14:00:00+03:00`), and how long it ran or when it stopped. The
+  note says what the hours were — "review fixes, merge, deploy" — rather than
+  leaving a bare number. A note is what makes an hour
   defensible three weeks later.
 * **Correct rather than guess.** `update_time_entry` exists for the case where
   the timer ran on the wrong task, or ran through lunch. A corrected entry with

@@ -1,0 +1,7035 @@
+{
+  "add_expense_charge": {
+    "additionalProperties": false,
+    "properties": {
+      "amount": {
+        "description": "What it COST us on that project. What the project is billed follows from its share, and is never typed",
+        "minimum": 0,
+        "title": "Amount",
+        "type": "number"
+      },
+      "charged_on": {
+        "description": "The date it was charged, YYYY-MM-DD",
+        "title": "Charged On",
+        "type": "string"
+      },
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      },
+      "fee": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What paying it cost",
+        "title": "Fee"
+      },
+      "paid_on": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The day it was paid, YYYY-MM-DD",
+        "title": "Paid On"
+      },
+      "project_id": {
+        "description": "Which project on this expense it is for",
+        "title": "Project Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "expense_id",
+      "project_id",
+      "charged_on",
+      "amount"
+    ],
+    "title": "add_expense_chargeArguments",
+    "type": "object"
+  },
+  "announce": {
+    "additionalProperties": false,
+    "properties": {
+      "body": {
+        "description": "What you want to say",
+        "minLength": 1,
+        "title": "Body",
+        "type": "string"
+      },
+      "by_mail": {
+        "default": false,
+        "description": "A letter as well as the feed — a mistake here is unrecallable",
+        "title": "By Mail",
+        "type": "boolean"
+      },
+      "by_push": {
+        "default": true,
+        "description": "Buzz the phones of people who subscribed; on unless you say not to",
+        "title": "By Push",
+        "type": "boolean"
+      },
+      "everybody": {
+        "default": false,
+        "description": "Everybody with an account",
+        "title": "Everybody",
+        "type": "boolean"
+      },
+      "level": {
+        "default": "info",
+        "description": "`warning` wants a decision",
+        "enum": [
+          "info",
+          "warning"
+        ],
+        "title": "Level",
+        "type": "string"
+      },
+      "project_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Everybody seated on or running these",
+        "title": "Project Ids"
+      },
+      "send_at": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "ISO time to send it; omit to send now",
+        "title": "Send At"
+      },
+      "subject": {
+        "description": "One line, the point of it",
+        "maxLength": 140,
+        "minLength": 1,
+        "title": "Subject",
+        "type": "string"
+      },
+      "user_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "And these people by name",
+        "title": "User Ids"
+      }
+    },
+    "required": [
+      "subject",
+      "body"
+    ],
+    "title": "announceArguments",
+    "type": "object"
+  },
+  "announcement_audience": {
+    "additionalProperties": false,
+    "properties": {
+      "everybody": {
+        "default": false,
+        "description": "Everybody with an account",
+        "title": "Everybody",
+        "type": "boolean"
+      },
+      "project_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Projects",
+        "title": "Project Ids"
+      },
+      "user_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "People",
+        "title": "User Ids"
+      }
+    },
+    "title": "announcement_audienceArguments",
+    "type": "object"
+  },
+  "archive_all_notifications": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "archive_all_notificationsArguments",
+    "type": "object"
+  },
+  "archive_notification": {
+    "additionalProperties": false,
+    "properties": {
+      "entry_id": {
+        "description": "Entry id, from `list_notifications`",
+        "title": "Entry Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id"
+    ],
+    "title": "archive_notificationArguments",
+    "type": "object"
+  },
+  "assign_pending_task": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      },
+      "pending_id": {
+        "description": "Pending task id",
+        "title": "Pending Id",
+        "type": "string"
+      },
+      "performer_id": {
+        "description": "Performer to place it on",
+        "title": "Performer Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id",
+      "pending_id",
+      "performer_id"
+    ],
+    "title": "assign_pending_taskArguments",
+    "type": "object"
+  },
+  "attach_expense_receipt_link": {
+    "additionalProperties": false,
+    "properties": {
+      "charge_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Hang it off one CHARGE of this expense — the invoice for that month, the transaction that settled it — rather than off the standing arrangement",
+        "title": "Charge Id"
+      },
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      },
+      "label": {
+        "default": "",
+        "description": "What to call it on screen",
+        "maxLength": 255,
+        "title": "Label",
+        "type": "string"
+      },
+      "url": {
+        "description": "Where the receipt lives — a transaction on a chain, a provider page",
+        "maxLength": 2083,
+        "minLength": 1,
+        "title": "Url",
+        "type": "string"
+      }
+    },
+    "required": [
+      "expense_id",
+      "url"
+    ],
+    "title": "attach_expense_receipt_linkArguments",
+    "type": "object"
+  },
+  "attach_merge_request": {
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      },
+      "url": {
+        "description": "Link to the merge request",
+        "maxLength": 2083,
+        "minLength": 1,
+        "title": "Url",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id",
+      "url"
+    ],
+    "title": "attach_merge_requestArguments",
+    "type": "object"
+  },
+  "billing_report": {
+    "additionalProperties": false,
+    "properties": {
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "billing_reportArguments",
+    "type": "object"
+  },
+  "calculate_invoice": {
+    "additionalProperties": false,
+    "properties": {
+      "charge_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Price exactly these cost charges. Omit to sweep them up; an empty list prices no costs.",
+        "title": "Charge Ids"
+      },
+      "discount": {
+        "default": 0,
+        "description": "Percent off the WORK (not the costs), 0–100",
+        "maximum": 100,
+        "minimum": 0,
+        "title": "Discount",
+        "type": "number"
+      },
+      "exclude_invoice_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Ignore this invoice when working out what is already claimed",
+        "title": "Exclude Invoice Id"
+      },
+      "invoice_date": {
+        "description": "Invoice date, YYYY-MM-DD. The automatic claim stops at the end of this day; work finished later rolls into the next invoice. Naming tasks explicitly ignores it.",
+        "title": "Invoice Date",
+        "type": "string"
+      },
+      "project_id": {
+        "description": "Project id",
+        "title": "Project Id",
+        "type": "string"
+      },
+      "task_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Price exactly these tasks. Omit to take every billable task.",
+        "title": "Task Ids"
+      }
+    },
+    "required": [
+      "project_id",
+      "invoice_date"
+    ],
+    "title": "calculate_invoiceArguments",
+    "type": "object"
+  },
+  "cancel_announcement": {
+    "additionalProperties": false,
+    "properties": {
+      "announcement_id": {
+        "description": "Announcement id",
+        "title": "Announcement Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "announcement_id"
+    ],
+    "title": "cancel_announcementArguments",
+    "type": "object"
+  },
+  "comment_on_task": {
+    "additionalProperties": false,
+    "properties": {
+      "body": {
+        "description": "Markdown, the same subset descriptions use",
+        "title": "Body",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id",
+      "body"
+    ],
+    "title": "comment_on_taskArguments",
+    "type": "object"
+  },
+  "confirm_expense_charge": {
+    "additionalProperties": false,
+    "properties": {
+      "amount": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The real figure for that day, whole — it is then re-split by the shares. Left out, what is recorded stands",
+        "title": "Amount"
+      },
+      "charged_on": {
+        "description": "The charge date being confirmed, YYYY-MM-DD",
+        "title": "Charged On",
+        "type": "string"
+      },
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      },
+      "fee": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What paying that bill actually cost. Left out beside an amount, the usual fee stands — a payment nobody corrected is not a payment with no fee",
+        "title": "Fee"
+      },
+      "paid_on": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The day WE actually paid it, YYYY-MM-DD — not the day it fell due. Marking it paid settles the figure too: you cannot pay an amount you do not know",
+        "title": "Paid On"
+      }
+    },
+    "required": [
+      "expense_id",
+      "charged_on"
+    ],
+    "title": "confirm_expense_chargeArguments",
+    "type": "object"
+  },
+  "count_open_work": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "count_open_workArguments",
+    "type": "object"
+  },
+  "count_projects": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "count_projectsArguments",
+    "type": "object"
+  },
+  "count_tasks": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Progress towards payment",
+        "title": "Billing"
+      },
+      "blocked": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "true = only tasks held up by open work; false = only ones nothing is blocking. Leave unset for both.",
+        "title": "Blocked"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "mine": {
+        "default": false,
+        "description": "Only tasks assigned to the caller",
+        "title": "Mine",
+        "type": "boolean"
+      },
+      "my_areas": {
+        "default": false,
+        "description": "Only work in the crafts the caller does",
+        "title": "My Areas",
+        "type": "boolean"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "high",
+              "urgent",
+              "none"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency; `none` is the ones nobody has triaged",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "running": {
+        "default": false,
+        "description": "Only tasks with a timer running right now",
+        "title": "Running",
+        "type": "boolean"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "trackable": {
+        "default": false,
+        "description": "Only tasks the caller may put a timer on",
+        "title": "Trackable",
+        "type": "boolean"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one person, across projects (from `list_users`)",
+        "title": "User Id"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "title": "count_tasksArguments",
+    "type": "object"
+  },
+  "create_area": {
+    "additionalProperties": false,
+    "properties": {
+      "handle": {
+        "default": "",
+        "description": "What to type to name its people: `back` — lower case, no spaces",
+        "maxLength": 32,
+        "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$|^$",
+        "title": "Handle",
+        "type": "string"
+      },
+      "is_active": {
+        "default": true,
+        "description": "False files it already retired — a craft kept for the record, not offered on new work",
+        "title": "Is Active",
+        "type": "boolean"
+      },
+      "title": {
+        "description": "What the craft is called",
+        "maxLength": 64,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      }
+    },
+    "required": [
+      "title"
+    ],
+    "title": "create_areaArguments",
+    "type": "object"
+  },
+  "create_company": {
+    "additionalProperties": false,
+    "properties": {
+      "address": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Address"
+      },
+      "email": {
+        "anyOf": [
+          {
+            "maxLength": 254,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Email"
+      },
+      "is_default": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Make it THE default — the previous one stops being",
+        "title": "Is Default"
+      },
+      "legal_name": {
+        "description": "As printed on the invoice",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Legal Name",
+        "type": "string"
+      },
+      "phone": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Phone"
+      },
+      "registration_number": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "ЄДРПОУ / ІПН",
+        "title": "Registration Number"
+      },
+      "title": {
+        "description": "Internal label, e.g. \"ФОП Іванов\"",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      },
+      "vat_number": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Vat Number"
+      },
+      "website": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Website"
+      }
+    },
+    "required": [
+      "title",
+      "legal_name"
+    ],
+    "title": "create_companyArguments",
+    "type": "object"
+  },
+  "create_epic": {
+    "additionalProperties": false,
+    "properties": {
+      "description": {
+        "default": "",
+        "description": "What the piece of work is",
+        "title": "Description",
+        "type": "string"
+      },
+      "project_id": {
+        "description": "Project it belongs to",
+        "title": "Project Id",
+        "type": "string"
+      },
+      "title": {
+        "description": "What it is called",
+        "maxLength": 120,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      }
+    },
+    "required": [
+      "project_id",
+      "title"
+    ],
+    "title": "create_epicArguments",
+    "type": "object"
+  },
+  "create_expense": {
+    "additionalProperties": false,
+    "properties": {
+      "amount": {
+        "description": "What is actually paid, per charge",
+        "exclusiveMinimum": 0,
+        "title": "Amount",
+        "type": "number"
+      },
+      "currency": {
+        "default": "USD",
+        "description": "Currency it is paid in",
+        "title": "Currency",
+        "type": "string"
+      },
+      "is_variable": {
+        "default": false,
+        "description": "The provider decides the figure each time — a CDN billed on traffic. `amount` is then the last known one, and every charge waits to be confirmed",
+        "title": "Is Variable",
+        "type": "boolean"
+      },
+      "next_charge_on": {
+        "description": "Date of the next charge, YYYY-MM-DD — or the only one, for a one-off",
+        "title": "Next Charge On",
+        "type": "string"
+      },
+      "note": {
+        "default": "",
+        "description": "Which account it sits under, anything worth keeping",
+        "title": "Note",
+        "type": "string"
+      },
+      "payment_fee": {
+        "default": 0,
+        "description": "What it costs to PAY it — a transfer charge, a card fee. Money out of the same door, so a project paying its share pays its share of this too",
+        "minimum": 0,
+        "title": "Payment Fee",
+        "type": "number"
+      },
+      "period": {
+        "default": "monthly",
+        "description": "How often it comes round",
+        "title": "Period",
+        "type": "string"
+      },
+      "shares": {
+        "description": "Who pays what, as [{\"project_id\": \"…\", \"share\": 50, \"price\": 11}]. `share` is per cent of the PROVIDER bill and the shares sum to 100; `price` is what that project is charged for one occurrence, absolute and in the currency of the expense. `markup` (per cent on top of what its part cost) instead of `price` where the bill moves with usage; never both. Neither means the project pays its part of the bill",
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "title": "Shares",
+        "type": "array"
+      },
+      "title": {
+        "description": "What it is — \"Romania VPS II\"",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      },
+      "vendor": {
+        "description": "Who is paid — AnubizHost, Hetzner",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Vendor",
+        "type": "string"
+      }
+    },
+    "required": [
+      "vendor",
+      "title",
+      "amount",
+      "next_charge_on",
+      "shares"
+    ],
+    "title": "create_expenseArguments",
+    "type": "object"
+  },
+  "create_integration": {
+    "additionalProperties": false,
+    "properties": {
+      "api_token": {
+        "default": "",
+        "description": "Read-only token for that tracker. Required to IMPORT; a webhook-only GitLab connection needs none",
+        "title": "Api Token",
+        "type": "string"
+      },
+      "base_url": {
+        "description": "The tracker's own base URL",
+        "maxLength": 2083,
+        "minLength": 1,
+        "title": "Base Url",
+        "type": "string"
+      },
+      "external_project_id": {
+        "description": "The target on the tracker side: an OpenProject project id, or a GitLab repository (`group/repo`, or its numeric id)",
+        "title": "External Project Id",
+        "type": "string"
+      },
+      "is_active": {
+        "default": true,
+        "description": "Whether scheduled syncs run",
+        "title": "Is Active",
+        "type": "boolean"
+      },
+      "kind": {
+        "default": "openproject",
+        "description": "Tracker type",
+        "enum": [
+          "openproject",
+          "gitlab"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "project_id": {
+        "description": "Project to bind",
+        "title": "Project Id",
+        "type": "string"
+      },
+      "webhook_secret": {
+        "default": "",
+        "description": "The secret GitLab signs its deliveries with — how we know a delivery is that repository",
+        "title": "Webhook Secret",
+        "type": "string"
+      }
+    },
+    "required": [
+      "project_id",
+      "base_url",
+      "external_project_id"
+    ],
+    "title": "create_integrationArguments",
+    "type": "object"
+  },
+  "create_invoice": {
+    "additionalProperties": false,
+    "properties": {
+      "budget_saved": {
+        "default": 0,
+        "description": "Budget saved, if any",
+        "title": "Budget Saved",
+        "type": "number"
+      },
+      "charge_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Bill exactly these cost charges. Omit to take every unclaimed charge dated on or before the invoice; pass an empty list to bill no costs at all.",
+        "title": "Charge Ids"
+      },
+      "discount": {
+        "default": 0,
+        "description": "Discount on the WORK for this invoice, in percent. Never on costs.",
+        "maximum": 100,
+        "minimum": 0,
+        "title": "Discount",
+        "type": "number"
+      },
+      "invoice_date": {
+        "description": "Invoice date, YYYY-MM-DD. The automatic claim stops at the end of this day; work finished later rolls into the next invoice. Naming tasks explicitly ignores it.",
+        "title": "Invoice Date",
+        "type": "string"
+      },
+      "paid_at": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Mark paid at this time (ISO 8601)",
+        "title": "Paid At"
+      },
+      "project_id": {
+        "description": "Project id",
+        "title": "Project Id",
+        "type": "string"
+      },
+      "task_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Bill exactly these tasks. Omit to take every billable task.",
+        "title": "Task Ids"
+      }
+    },
+    "required": [
+      "project_id",
+      "invoice_date"
+    ],
+    "title": "create_invoiceArguments",
+    "type": "object"
+  },
+  "create_payment_account": {
+    "additionalProperties": false,
+    "properties": {
+      "company_id": {
+        "description": "Whose account it is, from `list_companies`",
+        "title": "Company Id",
+        "type": "string"
+      },
+      "fields": {
+        "additionalProperties": true,
+        "description": "The account, named as `get_payment_account` returns it: `title` is required; `kind` (bank or crypto), `currency`, and for crypto `network` decide its shape",
+        "title": "Fields",
+        "type": "object"
+      }
+    },
+    "required": [
+      "company_id",
+      "fields"
+    ],
+    "title": "create_payment_accountArguments",
+    "type": "object"
+  },
+  "create_payout": {
+    "additionalProperties": false,
+    "properties": {
+      "amount": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only for an ADVANCE — money sent before the work was invoiced. With lines the amount comes from them and this is refused",
+        "title": "Amount"
+      },
+      "line_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Earning lines this transfer settles. EMPTY or absent makes it an advance, which needs `amount` instead",
+        "title": "Line Ids"
+      },
+      "method": {
+        "default": "",
+        "description": "Free text, only when the money went somewhere no saved method describes",
+        "maxLength": 64,
+        "title": "Method",
+        "type": "string"
+      },
+      "note": {
+        "default": "",
+        "description": "Anything worth remembering",
+        "title": "Note",
+        "type": "string"
+      },
+      "paid_amount": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What actually left, if it was not dollars",
+        "title": "Paid Amount"
+      },
+      "paid_at": {
+        "description": "Date the money left, YYYY-MM-DD",
+        "title": "Paid At",
+        "type": "string"
+      },
+      "paid_currency": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Currency of `paid_amount`: UAH, USD or EUR",
+        "title": "Paid Currency"
+      },
+      "payout_method_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Where it went: one of the PAYEE's active saved methods, from `list_payout_methods(user_id=…)`. Its details are frozen onto the payout",
+        "title": "Payout Method Id"
+      },
+      "tx_hash": {
+        "default": "",
+        "description": "Transaction hash of a crypto transfer, checked against the method's network and linked to its explorer: 0x+64 hex (ERC-20/BEP-20), 64 hex (TRC-20), the base58 signature (Solana), hex or base64 (TON)",
+        "maxLength": 128,
+        "title": "Tx Hash",
+        "type": "string"
+      },
+      "user_id": {
+        "description": "User id, from `list_users`",
+        "title": "User Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "user_id",
+      "paid_at"
+    ],
+    "title": "create_payoutArguments",
+    "type": "object"
+  },
+  "create_payout_method": {
+    "additionalProperties": false,
+    "properties": {
+      "address": {
+        "description": "Wallet address, IBAN or card number; for `other`, how to reach the money in words",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Address",
+        "type": "string"
+      },
+      "bank_name": {
+        "default": "",
+        "description": "Bank or card: which bank",
+        "maxLength": 255,
+        "title": "Bank Name",
+        "type": "string"
+      },
+      "beneficiary_name": {
+        "default": "",
+        "description": "Bank only: the name the account is in",
+        "maxLength": 255,
+        "title": "Beneficiary Name",
+        "type": "string"
+      },
+      "currency": {
+        "default": "USD",
+        "description": "UAH, USD or EUR — ignored for crypto, which is USD",
+        "title": "Currency",
+        "type": "string"
+      },
+      "is_default": {
+        "default": false,
+        "description": "Make it the default at once",
+        "title": "Is Default",
+        "type": "boolean"
+      },
+      "kind": {
+        "description": "crypto, bank (IBAN), card or other",
+        "title": "Kind",
+        "type": "string"
+      },
+      "label": {
+        "default": "",
+        "description": "A name: Binance, Ledger, Monobank",
+        "maxLength": 64,
+        "title": "Label",
+        "type": "string"
+      },
+      "memo": {
+        "default": "",
+        "description": "Memo / tag, when the exchange asks for one",
+        "maxLength": 128,
+        "title": "Memo",
+        "type": "string"
+      },
+      "network": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Crypto only: erc20, trc20, bep20, ton or sol",
+        "title": "Network"
+      },
+      "own_wallet": {
+        "default": false,
+        "description": "Crypto only: the person's own wallet, every token on the network arrives",
+        "title": "Own Wallet",
+        "type": "boolean"
+      },
+      "swift": {
+        "default": "",
+        "description": "Bank only: SWIFT / BIC",
+        "maxLength": 32,
+        "title": "Swift",
+        "type": "string"
+      },
+      "token": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Crypto only: USDT or USDC — omit with own_wallet",
+        "title": "Token"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "For an administrator adding one on somebody's behalf; omit for your own",
+        "title": "User Id"
+      }
+    },
+    "required": [
+      "kind",
+      "address"
+    ],
+    "title": "create_payout_methodArguments",
+    "type": "object"
+  },
+  "create_performer": {
+    "additionalProperties": false,
+    "properties": {
+      "area_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Crafts this seat may label a task with; omit to take the person's own",
+        "title": "Area Ids"
+      },
+      "curator_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Managing user, if any",
+        "title": "Curator Id"
+      },
+      "inner_price": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What we pay them; omit to use their base rate",
+        "title": "Inner Price"
+      },
+      "outer_price": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What the client is billed per hour; omit to use the project's default sale price",
+        "title": "Outer Price"
+      },
+      "position": {
+        "default": "",
+        "description": "Their role on this project",
+        "maxLength": 255,
+        "title": "Position",
+        "type": "string"
+      },
+      "project_id": {
+        "description": "Project id",
+        "title": "Project Id",
+        "type": "string"
+      },
+      "user_id": {
+        "description": "The person, from list_users",
+        "title": "User Id",
+        "type": "string"
+      },
+      "work_format": {
+        "default": "hour",
+        "description": "hour, part or full",
+        "title": "Work Format",
+        "type": "string"
+      }
+    },
+    "required": [
+      "project_id",
+      "user_id"
+    ],
+    "title": "create_performerArguments",
+    "type": "object"
+  },
+  "create_performer_link": {
+    "additionalProperties": false,
+    "properties": {
+      "external_user_id": {
+        "description": "Their id on the tracker",
+        "title": "External User Id",
+        "type": "string"
+      },
+      "external_user_label": {
+        "default": "",
+        "description": "Their name on the tracker",
+        "title": "External User Label",
+        "type": "string"
+      },
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      },
+      "performer_id": {
+        "description": "The performer here",
+        "title": "Performer Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id",
+      "external_user_id",
+      "performer_id"
+    ],
+    "title": "create_performer_linkArguments",
+    "type": "object"
+  },
+  "create_priority_map": {
+    "additionalProperties": false,
+    "properties": {
+      "external_priority": {
+        "description": "The tracker's priority name",
+        "title": "External Priority",
+        "type": "string"
+      },
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      },
+      "priority": {
+        "description": "What it means here",
+        "enum": [
+          "low",
+          "high",
+          "urgent"
+        ],
+        "title": "Priority",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id",
+      "external_priority",
+      "priority"
+    ],
+    "title": "create_priority_mapArguments",
+    "type": "object"
+  },
+  "create_project": {
+    "additionalProperties": false,
+    "properties": {
+      "bill_to": {
+        "default": "",
+        "description": "The client's requisites as printed on the invoice; empty names the project owners",
+        "title": "Bill To",
+        "type": "string"
+      },
+      "currency": {
+        "default": "USD",
+        "description": "Billing currency for this project: UAH, USD or EUR",
+        "title": "Currency",
+        "type": "string"
+      },
+      "default_outer_price": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What an hour on this project sells for, for people added to it. Without it, adding somebody must name a price",
+        "title": "Default Outer Price"
+      },
+      "description": {
+        "default": "",
+        "description": "What the project is",
+        "title": "Description",
+        "type": "string"
+      },
+      "fee": {
+        "default": 0,
+        "description": "Agency fee, percent",
+        "exclusiveMaximum": 100,
+        "minimum": 0,
+        "title": "Fee",
+        "type": "number"
+      },
+      "key_prefix": {
+        "anyOf": [
+          {
+            "maxLength": 8,
+            "pattern": "^[A-Z][A-Z0-9]{1,7}$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What leads this project's task keys — the `NUC` of `NUC-142`. Omit and the server derives one from the title",
+        "title": "Key Prefix"
+      },
+      "manager_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Managers who RUN this project. Not who works on it — that is a performer, created separately with a rate — and being named here costs the project nothing and appears on no invoice",
+        "title": "Manager Ids"
+      },
+      "owner_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Client users who own this project",
+        "title": "Owner Ids"
+      },
+      "payment_account_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Account to be paid into, from `list_payment_accounts`. Omit to bill through the default company account in this currency",
+        "title": "Payment Account Id"
+      },
+      "title": {
+        "description": "Project title",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      }
+    },
+    "required": [
+      "title"
+    ],
+    "title": "create_projectArguments",
+    "type": "object"
+  },
+  "create_status_map": {
+    "additionalProperties": false,
+    "properties": {
+      "external_status": {
+        "description": "The tracker's status name",
+        "title": "External Status",
+        "type": "string"
+      },
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      },
+      "status": {
+        "description": "What it means here",
+        "enum": [
+          "todo",
+          "in_progress",
+          "done",
+          "cancelled"
+        ],
+        "title": "Status",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id",
+      "external_status",
+      "status"
+    ],
+    "title": "create_status_mapArguments",
+    "type": "object"
+  },
+  "create_task": {
+    "additionalProperties": false,
+    "properties": {
+      "area_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Crafts the work needs; omit to take the seat's own",
+        "title": "Area Ids"
+      },
+      "collaborator_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Others working on it — seats on the SAME project",
+        "title": "Collaborator Ids"
+      },
+      "description": {
+        "default": "",
+        "description": "Longer description",
+        "title": "Description",
+        "type": "string"
+      },
+      "done_time": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "When it was actually finished (ISO 8601); omit to let the status stamp it",
+        "title": "Done Time"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Which larger piece of work it is part of — from `list_epics`, and on the SAME project",
+        "title": "Epic Id"
+      },
+      "performer_id": {
+        "description": "Who ANSWERS for it — from list_performers",
+        "title": "Performer Id",
+        "type": "string"
+      },
+      "priority": {
+        "default": "",
+        "description": "How urgent; empty means nobody has said",
+        "enum": [
+          "",
+          "low",
+          "high",
+          "urgent"
+        ],
+        "title": "Priority",
+        "type": "string"
+      },
+      "status": {
+        "default": "todo",
+        "description": "Initial state",
+        "enum": [
+          "todo",
+          "in_progress",
+          "done",
+          "cancelled"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "title": {
+        "description": "Task title",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      }
+    },
+    "required": [
+      "performer_id",
+      "title"
+    ],
+    "title": "create_taskArguments",
+    "type": "object"
+  },
+  "create_user": {
+    "additionalProperties": false,
+    "properties": {
+      "area_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What this person DOES — pre-ticked on every seat they are later given, and not a permission of its own",
+        "title": "Area Ids"
+      },
+      "email": {
+        "description": "Email — also the login identifier",
+        "title": "Email",
+        "type": "string"
+      },
+      "full_time": {
+        "default": 0,
+        "description": "Base full-time rate",
+        "minimum": 0,
+        "title": "Full Time",
+        "type": "number"
+      },
+      "hour": {
+        "default": 0,
+        "description": "Base hourly rate",
+        "minimum": 0,
+        "title": "Hour",
+        "type": "number"
+      },
+      "must_setup_2fa": {
+        "default": false,
+        "description": "Hold their first sign-in until they enrol an authenticator",
+        "title": "Must Setup 2Fa",
+        "type": "boolean"
+      },
+      "part_time": {
+        "default": 0,
+        "description": "Base part-time rate",
+        "minimum": 0,
+        "title": "Part Time",
+        "type": "number"
+      },
+      "public_name": {
+        "default": "",
+        "description": "Display name, shown on invoices",
+        "maxLength": 255,
+        "title": "Public Name",
+        "type": "string"
+      },
+      "roles": {
+        "description": "Every role they hold — one or several, e.g. [\"admin\", \"executor\"]",
+        "items": {
+          "enum": [
+            "admin",
+            "pm",
+            "executor",
+            "client"
+          ],
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Roles",
+        "type": "array"
+      },
+      "username": {
+        "default": "",
+        "description": "The other login name, and what an `@mention` types. Empty mirrors the email",
+        "maxLength": 255,
+        "title": "Username",
+        "type": "string"
+      }
+    },
+    "required": [
+      "email",
+      "roles"
+    ],
+    "title": "create_userArguments",
+    "type": "object"
+  },
+  "current_timer": {
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "current_timerArguments",
+    "type": "object"
+  },
+  "delete_attachment": {
+    "additionalProperties": false,
+    "properties": {
+      "attachment_id": {
+        "description": "Attachment id",
+        "title": "Attachment Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "attachment_id"
+    ],
+    "title": "delete_attachmentArguments",
+    "type": "object"
+  },
+  "delete_epic": {
+    "additionalProperties": false,
+    "properties": {
+      "epic_id": {
+        "description": "Epic id",
+        "title": "Epic Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "epic_id"
+    ],
+    "title": "delete_epicArguments",
+    "type": "object"
+  },
+  "delete_expense": {
+    "additionalProperties": false,
+    "properties": {
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "expense_id"
+    ],
+    "title": "delete_expenseArguments",
+    "type": "object"
+  },
+  "delete_expense_charge": {
+    "additionalProperties": false,
+    "properties": {
+      "charge_id": {
+        "description": "Charge id",
+        "title": "Charge Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "charge_id"
+    ],
+    "title": "delete_expense_chargeArguments",
+    "type": "object"
+  },
+  "delete_expense_receipt": {
+    "additionalProperties": false,
+    "properties": {
+      "receipt_id": {
+        "description": "Receipt id, from list_expense_receipts",
+        "title": "Receipt Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "receipt_id"
+    ],
+    "title": "delete_expense_receiptArguments",
+    "type": "object"
+  },
+  "delete_integration": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "delete_integrationArguments",
+    "type": "object"
+  },
+  "delete_invoice": {
+    "additionalProperties": false,
+    "properties": {
+      "invoice_id": {
+        "description": "Invoice id",
+        "title": "Invoice Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "invoice_id"
+    ],
+    "title": "delete_invoiceArguments",
+    "type": "object"
+  },
+  "delete_notification": {
+    "additionalProperties": false,
+    "properties": {
+      "entry_id": {
+        "description": "Entry id, from `list_notifications`",
+        "title": "Entry Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id"
+    ],
+    "title": "delete_notificationArguments",
+    "type": "object"
+  },
+  "delete_payout": {
+    "additionalProperties": false,
+    "properties": {
+      "payout_id": {
+        "description": "Payout id",
+        "title": "Payout Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "payout_id"
+    ],
+    "title": "delete_payoutArguments",
+    "type": "object"
+  },
+  "delete_payout_method": {
+    "additionalProperties": false,
+    "properties": {
+      "method_id": {
+        "description": "Payout method id",
+        "title": "Method Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "method_id"
+    ],
+    "title": "delete_payout_methodArguments",
+    "type": "object"
+  },
+  "delete_performer": {
+    "additionalProperties": false,
+    "properties": {
+      "performer_id": {
+        "description": "Performer id",
+        "title": "Performer Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "performer_id"
+    ],
+    "title": "delete_performerArguments",
+    "type": "object"
+  },
+  "delete_performer_link": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      },
+      "link_id": {
+        "description": "Link id",
+        "title": "Link Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id",
+      "link_id"
+    ],
+    "title": "delete_performer_linkArguments",
+    "type": "object"
+  },
+  "delete_priority_map": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      },
+      "map_id": {
+        "description": "Priority map id",
+        "title": "Map Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id",
+      "map_id"
+    ],
+    "title": "delete_priority_mapArguments",
+    "type": "object"
+  },
+  "delete_project": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "description": "Project id",
+        "title": "Project Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "project_id"
+    ],
+    "title": "delete_projectArguments",
+    "type": "object"
+  },
+  "delete_status_map": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      },
+      "map_id": {
+        "description": "Status map id",
+        "title": "Map Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id",
+      "map_id"
+    ],
+    "title": "delete_status_mapArguments",
+    "type": "object"
+  },
+  "delete_task": {
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "delete_taskArguments",
+    "type": "object"
+  },
+  "delete_time_entry": {
+    "additionalProperties": false,
+    "properties": {
+      "entry_id": {
+        "description": "Time entry id",
+        "title": "Entry Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id"
+    ],
+    "title": "delete_time_entryArguments",
+    "type": "object"
+  },
+  "detach_merge_request": {
+    "additionalProperties": false,
+    "properties": {
+      "merge_request_id": {
+        "title": "Merge Request Id",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id",
+      "merge_request_id"
+    ],
+    "title": "detach_merge_requestArguments",
+    "type": "object"
+  },
+  "expense_charge_totals": {
+    "additionalProperties": false,
+    "properties": {
+      "billing": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "uninvoiced, awaiting or paid",
+        "title": "Billing"
+      },
+      "charged_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "On or after, YYYY-MM-DD",
+        "title": "Charged From"
+      },
+      "charged_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "On or before, YYYY-MM-DD",
+        "title": "Charged To"
+      },
+      "expense_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one arrangement",
+        "title": "Expense Id"
+      },
+      "paid": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Whether WE have paid the provider",
+        "title": "Paid"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "provisional": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Whether it is still waiting for the provider's real figure",
+        "title": "Provisional"
+      }
+    },
+    "title": "expense_charge_totalsArguments",
+    "type": "object"
+  },
+  "get_attachment_download_link": {
+    "additionalProperties": false,
+    "properties": {
+      "attachment_id": {
+        "description": "Attachment id",
+        "title": "Attachment Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "attachment_id"
+    ],
+    "title": "get_attachment_download_linkArguments",
+    "type": "object"
+  },
+  "get_expense": {
+    "additionalProperties": false,
+    "properties": {
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "expense_id"
+    ],
+    "title": "get_expenseArguments",
+    "type": "object"
+  },
+  "get_invoice": {
+    "additionalProperties": false,
+    "properties": {
+      "invoice_id": {
+        "description": "Invoice id",
+        "title": "Invoice Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "invoice_id"
+    ],
+    "title": "get_invoiceArguments",
+    "type": "object"
+  },
+  "get_invoice_detail": {
+    "additionalProperties": false,
+    "properties": {
+      "invoice_id": {
+        "description": "Invoice id",
+        "title": "Invoice Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "invoice_id"
+    ],
+    "title": "get_invoice_detailArguments",
+    "type": "object"
+  },
+  "get_invoice_export_links": {
+    "additionalProperties": false,
+    "properties": {
+      "invoice_id": {
+        "description": "Invoice id",
+        "title": "Invoice Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "invoice_id"
+    ],
+    "title": "get_invoice_export_linksArguments",
+    "type": "object"
+  },
+  "get_open_work": {
+    "additionalProperties": false,
+    "properties": {
+      "task_ref": {
+        "description": "Task key (e.g. LIZ-74) or id",
+        "title": "Task Ref",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_ref"
+    ],
+    "title": "get_open_workArguments",
+    "type": "object"
+  },
+  "get_payment_account": {
+    "additionalProperties": false,
+    "properties": {
+      "account_id": {
+        "description": "Account id, from `list_payment_accounts`",
+        "title": "Account Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "account_id"
+    ],
+    "title": "get_payment_accountArguments",
+    "type": "object"
+  },
+  "get_performer": {
+    "additionalProperties": false,
+    "properties": {
+      "performer_id": {
+        "description": "Performer id",
+        "title": "Performer Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "performer_id"
+    ],
+    "title": "get_performerArguments",
+    "type": "object"
+  },
+  "get_project": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "description": "Project id",
+        "title": "Project Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "project_id"
+    ],
+    "title": "get_projectArguments",
+    "type": "object"
+  },
+  "get_task": {
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "get_taskArguments",
+    "type": "object"
+  },
+  "get_time_entry": {
+    "additionalProperties": false,
+    "properties": {
+      "entry_id": {
+        "description": "Time entry id",
+        "title": "Entry Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id"
+    ],
+    "title": "get_time_entryArguments",
+    "type": "object"
+  },
+  "get_user": {
+    "additionalProperties": false,
+    "properties": {
+      "user_id": {
+        "description": "User id",
+        "title": "User Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "user_id"
+    ],
+    "title": "get_userArguments",
+    "type": "object"
+  },
+  "hours_report": {
+    "additionalProperties": false,
+    "properties": {
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "hours_reportArguments",
+    "type": "object"
+  },
+  "link_tasks": {
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "default": "relates",
+        "description": "`blocks`: this task stands in the way of that one. `relates`: they are about the same thing, with no promise either way",
+        "enum": [
+          "blocks",
+          "relates"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      },
+      "to_task_id": {
+        "description": "The task at the other end",
+        "title": "To Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id",
+      "to_task_id"
+    ],
+    "title": "link_tasksArguments",
+    "type": "object"
+  },
+  "list_announcements": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      }
+    },
+    "title": "list_announcementsArguments",
+    "type": "object"
+  },
+  "list_areas": {
+    "additionalProperties": false,
+    "properties": {
+      "active": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "True lists only the crafts still offered, False only the retired ones; omit for both",
+        "title": "Active"
+      },
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      }
+    },
+    "title": "list_areasArguments",
+    "type": "object"
+  },
+  "list_attachments": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "list_attachmentsArguments",
+    "type": "object"
+  },
+  "list_billable_tasks": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "description": "Project id",
+        "title": "Project Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "project_id"
+    ],
+    "title": "list_billable_tasksArguments",
+    "type": "object"
+  },
+  "list_companies": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "list_companiesArguments",
+    "type": "object"
+  },
+  "list_epics": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "project_id": {
+        "description": "Project id — an epic belongs to one",
+        "title": "Project Id",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "open",
+              "done"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Narrow to open or to closed epics; omit for both",
+        "title": "Status"
+      }
+    },
+    "required": [
+      "project_id"
+    ],
+    "title": "list_epicsArguments",
+    "type": "object"
+  },
+  "list_expense_charges": {
+    "additionalProperties": false,
+    "properties": {
+      "billing": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "uninvoiced, awaiting or paid — the same three words a task uses, and they are about the CLIENT being billed",
+        "title": "Billing"
+      },
+      "charged_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only charges on or after this date, YYYY-MM-DD",
+        "title": "Charged From"
+      },
+      "charged_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only charges on or before this date, YYYY-MM-DD",
+        "title": "Charged To"
+      },
+      "expense_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one arrangement",
+        "title": "Expense Id"
+      },
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "paid": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Whether WE have paid the provider — the other direction of the money. False is \"what do we still owe out\"",
+        "title": "Paid"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "provisional": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "True is what is waiting for the provider's real figure: recorded on its day with the last known amount, and unbillable until somebody confirms it",
+        "title": "Provisional"
+      }
+    },
+    "title": "list_expense_chargesArguments",
+    "type": "object"
+  },
+  "list_expense_receipts": {
+    "additionalProperties": false,
+    "properties": {
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      },
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "expense_id"
+    ],
+    "title": "list_expense_receiptsArguments",
+    "type": "object"
+  },
+  "list_expenses": {
+    "additionalProperties": false,
+    "properties": {
+      "active": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "True: only what still generates charges. False: only what was cancelled",
+        "title": "Active"
+      },
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "overdue": {
+        "default": false,
+        "description": "Only the ones whose charge date has passed and has not moved — the sweep is not running, or it stopped on a date somebody typed wrong",
+        "title": "Overdue",
+        "type": "boolean"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "list_expensesArguments",
+    "type": "object"
+  },
+  "list_external_users": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "list_external_usersArguments",
+    "type": "object"
+  },
+  "list_integrations": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "list_integrationsArguments",
+    "type": "object"
+  },
+  "list_invoices": {
+    "additionalProperties": false,
+    "properties": {
+      "is_paid": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "True: only the settled ones. False: only what is still owed. Omit for both",
+        "title": "Is Paid"
+      },
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "list_invoicesArguments",
+    "type": "object"
+  },
+  "list_money_changes": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "object_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "One performer or invoice",
+        "title": "Object Id"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "description": "Project id",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Project Id"
+      },
+      "source": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Where the change came from: api, mcp, admin or system",
+        "title": "Source"
+      }
+    },
+    "title": "list_money_changesArguments",
+    "type": "object"
+  },
+  "list_notifications": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "state": {
+        "default": "active",
+        "description": "'active' is the working list; 'archived' is what was put away",
+        "enum": [
+          "active",
+          "archived"
+        ],
+        "title": "State",
+        "type": "string"
+      }
+    },
+    "title": "list_notificationsArguments",
+    "type": "object"
+  },
+  "list_open_work": {
+    "additionalProperties": false,
+    "properties": {
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "const": "all",
+            "type": "string"
+          }
+        ],
+        "default": "unpaid",
+        "description": "Stage to keep. Default \"unpaid\" = still owed for; \"all\" = history",
+        "title": "Billing"
+      },
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "list_open_workArguments",
+    "type": "object"
+  },
+  "list_open_work_files": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "task_ref": {
+        "description": "Task key or id",
+        "title": "Task Ref",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_ref"
+    ],
+    "title": "list_open_work_filesArguments",
+    "type": "object"
+  },
+  "list_owed": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Project Id"
+      }
+    },
+    "title": "list_owedArguments",
+    "type": "object"
+  },
+  "list_payment_accounts": {
+    "additionalProperties": false,
+    "properties": {
+      "include_inactive": {
+        "default": false,
+        "description": "Also list retired accounts",
+        "title": "Include Inactive",
+        "type": "boolean"
+      }
+    },
+    "title": "list_payment_accountsArguments",
+    "type": "object"
+  },
+  "list_payout_methods": {
+    "additionalProperties": false,
+    "properties": {
+      "include_retired": {
+        "default": false,
+        "description": "Also list retired ones, after the active",
+        "title": "Include Retired",
+        "type": "boolean"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Whose methods — omit for your own; somebody else's is administrators only",
+        "title": "User Id"
+      }
+    },
+    "title": "list_payout_methodsArguments",
+    "type": "object"
+  },
+  "list_payouts": {
+    "additionalProperties": false,
+    "properties": {
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "User Id"
+      }
+    },
+    "title": "list_payoutsArguments",
+    "type": "object"
+  },
+  "list_pending_tasks": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "list_pending_tasksArguments",
+    "type": "object"
+  },
+  "list_performer_links": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "list_performer_linksArguments",
+    "type": "object"
+  },
+  "list_performers": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "list_performersArguments",
+    "type": "object"
+  },
+  "list_priority_maps": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "list_priority_mapsArguments",
+    "type": "object"
+  },
+  "list_projects": {
+    "additionalProperties": false,
+    "properties": {
+      "is_active": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "True for live projects, false for archived ones; omit for both",
+        "title": "Is Active"
+      },
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      }
+    },
+    "title": "list_projectsArguments",
+    "type": "object"
+  },
+  "list_roles": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "list_rolesArguments",
+    "type": "object"
+  },
+  "list_status_maps": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "list_status_mapsArguments",
+    "type": "object"
+  },
+  "list_task_comments": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "list_task_commentsArguments",
+    "type": "object"
+  },
+  "list_task_history": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "list_task_historyArguments",
+    "type": "object"
+  },
+  "list_task_links": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "list_task_linksArguments",
+    "type": "object"
+  },
+  "list_task_merge_requests": {
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "list_task_merge_requestsArguments",
+    "type": "object"
+  },
+  "list_task_versions": {
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "list_task_versionsArguments",
+    "type": "object"
+  },
+  "list_tasks": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Progress towards payment",
+        "title": "Billing"
+      },
+      "blocked": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "true = only tasks held up by open work; false = only ones nothing is blocking. Leave unset for both.",
+        "title": "Blocked"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "key": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "One task by the key people type — NUC-142, case-insensitive",
+        "title": "Key"
+      },
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "mine": {
+        "default": false,
+        "description": "Only tasks assigned to the caller",
+        "title": "Mine",
+        "type": "boolean"
+      },
+      "my_areas": {
+        "default": false,
+        "description": "Only work in the crafts the caller does",
+        "title": "My Areas",
+        "type": "boolean"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "high",
+              "urgent",
+              "none"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency; `none` is the ones nobody has triaged",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "running": {
+        "default": false,
+        "description": "Only tasks with a timer running right now",
+        "title": "Running",
+        "type": "boolean"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "sort": {
+        "default": "rank",
+        "enum": [
+          "rank",
+          "activity",
+          "priority",
+          "board",
+          "affinity"
+        ],
+        "title": "Sort",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "trackable": {
+        "default": false,
+        "description": "Only tasks the caller may put a timer on",
+        "title": "Trackable",
+        "type": "boolean"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one person, across projects (from `list_users`)",
+        "title": "User Id"
+      },
+      "with_cancelled": {
+        "default": false,
+        "description": "Keep cancelled tasks in the answer as well",
+        "title": "With Cancelled",
+        "type": "boolean"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "title": "list_tasksArguments",
+    "type": "object"
+  },
+  "list_time_entries": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "mine": {
+        "default": false,
+        "description": "Only the caller's own entries",
+        "title": "Mine",
+        "type": "boolean"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "task_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one task",
+        "title": "Task Id"
+      }
+    },
+    "title": "list_time_entriesArguments",
+    "type": "object"
+  },
+  "list_unsettled_lines": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Project Id"
+      },
+      "user_id": {
+        "description": "User id, from `list_users`",
+        "title": "User Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "user_id"
+    ],
+    "title": "list_unsettled_linesArguments",
+    "type": "object"
+  },
+  "list_users": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "role": {
+        "anyOf": [
+          {
+            "enum": [
+              "admin",
+              "pm",
+              "executor",
+              "client"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only users holding this role",
+        "title": "Role"
+      }
+    },
+    "title": "list_usersArguments",
+    "type": "object"
+  },
+  "log_time": {
+    "additionalProperties": false,
+    "properties": {
+      "ended_at": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "When it ended, ISO 8601. Give this OR `hours`, not both",
+        "title": "Ended At"
+      },
+      "hours": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "maximum": 24,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How long it took, e.g. 1.5. Give this OR `ended_at`",
+        "title": "Hours"
+      },
+      "note": {
+        "default": "",
+        "description": "What was done",
+        "maxLength": 500,
+        "title": "Note",
+        "type": "string"
+      },
+      "started_at": {
+        "description": "When the work started, ISO 8601 with its offset — e.g. 2026-10-10T14:00:00+03:00",
+        "title": "Started At",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Administrators only: whose time it is, on a task that person works on",
+        "title": "User Id"
+      }
+    },
+    "required": [
+      "task_id",
+      "started_at"
+    ],
+    "title": "log_timeArguments",
+    "type": "object"
+  },
+  "mark_notification_read": {
+    "additionalProperties": false,
+    "properties": {
+      "entry_id": {
+        "description": "Entry id, from `list_notifications`",
+        "title": "Entry Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id"
+    ],
+    "title": "mark_notification_readArguments",
+    "type": "object"
+  },
+  "mark_notification_unread": {
+    "additionalProperties": false,
+    "properties": {
+      "entry_id": {
+        "description": "Entry id, from `list_notifications`",
+        "title": "Entry Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id"
+    ],
+    "title": "mark_notification_unreadArguments",
+    "type": "object"
+  },
+  "move_task": {
+    "additionalProperties": false,
+    "properties": {
+      "next_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Task that ends up below it",
+        "title": "Next Id"
+      },
+      "order": {
+        "default": "list",
+        "description": "Which hand-made order to move it in",
+        "enum": [
+          "list",
+          "board"
+        ],
+        "title": "Order",
+        "type": "string"
+      },
+      "previous_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Task that ends up above it",
+        "title": "Previous Id"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "move_taskArguments",
+    "type": "object"
+  },
+  "my_running_timer": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "my_running_timerArguments",
+    "type": "object"
+  },
+  "my_unpaid_earnings": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "my_unpaid_earningsArguments",
+    "type": "object"
+  },
+  "notification_counts": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "notification_countsArguments",
+    "type": "object"
+  },
+  "notification_preferences": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "notification_preferencesArguments",
+    "type": "object"
+  },
+  "open_work_totals": {
+    "additionalProperties": false,
+    "properties": {
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "const": "all",
+            "type": "string"
+          }
+        ],
+        "default": "unpaid",
+        "description": "Stage to total. Default \"unpaid\" = still owed for, the same set list_open_work returns; \"uninvoiced\" = what is accruing",
+        "title": "Billing"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "open_work_totalsArguments",
+    "type": "object"
+  },
+  "read_all_notifications": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "read_all_notificationsArguments",
+    "type": "object"
+  },
+  "recalculate_invoice": {
+    "additionalProperties": false,
+    "properties": {
+      "invoice_id": {
+        "description": "Invoice id",
+        "title": "Invoice Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "invoice_id"
+    ],
+    "title": "recalculate_invoiceArguments",
+    "type": "object"
+  },
+  "record_expense_charges": {
+    "additionalProperties": false,
+    "properties": {
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "expense_id"
+    ],
+    "title": "record_expense_chargesArguments",
+    "type": "object"
+  },
+  "report_bounds": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "report_boundsArguments",
+    "type": "object"
+  },
+  "send_invoice": {
+    "additionalProperties": false,
+    "properties": {
+      "force": {
+        "default": false,
+        "description": "Send again one already sent",
+        "title": "Force",
+        "type": "boolean"
+      },
+      "invoice_id": {
+        "description": "Invoice id",
+        "title": "Invoice Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "invoice_id"
+    ],
+    "title": "send_invoiceArguments",
+    "type": "object"
+  },
+  "set_notification_preference": {
+    "additionalProperties": false,
+    "properties": {
+      "channel": {
+        "description": "The feed is not negotiable: it is the record of what you were told",
+        "enum": [
+          "push",
+          "mail"
+        ],
+        "title": "Channel",
+        "type": "string"
+      },
+      "enabled": {
+        "description": "Whether you want this kind on that channel",
+        "title": "Enabled",
+        "type": "boolean"
+      },
+      "event_key": {
+        "description": "Which kind, e.g. `task.mentioned` — from `notification_preferences`",
+        "title": "Event Key",
+        "type": "string"
+      }
+    },
+    "required": [
+      "event_key",
+      "channel",
+      "enabled"
+    ],
+    "title": "set_notification_preferenceArguments",
+    "type": "object"
+  },
+  "set_task_status": {
+    "additionalProperties": false,
+    "properties": {
+      "status": {
+        "enum": [
+          "todo",
+          "in_progress",
+          "done",
+          "cancelled"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id",
+      "status"
+    ],
+    "title": "set_task_statusArguments",
+    "type": "object"
+  },
+  "start_timer": {
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "start_timerArguments",
+    "type": "object"
+  },
+  "stats_costs": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "top": {
+        "default": 8,
+        "description": "Expenses and projects named before the rest fold into Other (1-20)",
+        "maximum": 20,
+        "minimum": 1,
+        "title": "Top",
+        "type": "integer"
+      },
+      "view": {
+        "default": "native",
+        "description": "`native`: each charge by its due day, in its own currency; `spent`: paid charges by the day paid, at the figure frozen then in the project currency",
+        "enum": [
+          "native",
+          "spent"
+        ],
+        "title": "View",
+        "type": "string"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_costsArguments",
+    "type": "object"
+  },
+  "stats_delivery": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "top": {
+        "default": 10,
+        "description": "How many of the heaviest finished tasks are named (1-20)",
+        "maximum": 20,
+        "minimum": 1,
+        "title": "Top",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_deliveryArguments",
+    "type": "object"
+  },
+  "stats_hours": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "top": {
+        "default": 8,
+        "description": "Projects, and people, named before the rest fold into Other (1-20)",
+        "maximum": 20,
+        "minimum": 1,
+        "title": "Top",
+        "type": "integer"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to the hours one person tracked",
+        "title": "User Id"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_hoursArguments",
+    "type": "object"
+  },
+  "stats_overview": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_overviewArguments",
+    "type": "object"
+  },
+  "stats_payouts": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "top": {
+        "default": 8,
+        "description": "Projects shown before the rest fold into Other (1-20)",
+        "maximum": 20,
+        "minimum": 1,
+        "title": "Top",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_payoutsArguments",
+    "type": "object"
+  },
+  "stats_people": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "top": {
+        "default": 8,
+        "description": "People named before the rest fold into Other (1-20)",
+        "maximum": 20,
+        "minimum": 1,
+        "title": "Top",
+        "type": "integer"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one person",
+        "title": "User Id"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_peopleArguments",
+    "type": "object"
+  },
+  "stats_projects": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "top": {
+        "default": 8,
+        "description": "Clients named before the rest fold into Other (1-20)",
+        "maximum": 20,
+        "minimum": 1,
+        "title": "Top",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_projectsArguments",
+    "type": "object"
+  },
+  "stats_receivables": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_receivablesArguments",
+    "type": "object"
+  },
+  "stats_revenue": {
+    "additionalProperties": false,
+    "properties": {
+      "compare": {
+        "default": "previous",
+        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
+        "enum": [
+          "previous",
+          "year",
+          "none"
+        ],
+        "title": "Compare",
+        "type": "string"
+      },
+      "granularity": {
+        "default": "auto",
+        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
+        "enum": [
+          "auto",
+          "day",
+          "week",
+          "month"
+        ],
+        "title": "Granularity",
+        "type": "string"
+      },
+      "period_from": {
+        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period From",
+        "type": "string"
+      },
+      "period_to": {
+        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
+        "title": "Period To",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "top": {
+        "default": 8,
+        "description": "Projects shown before the rest fold into Other (1-20)",
+        "maximum": 20,
+        "minimum": 1,
+        "title": "Top",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "period_from",
+      "period_to"
+    ],
+    "title": "stats_revenueArguments",
+    "type": "object"
+  },
+  "stop_timer": {
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "stop_timerArguments",
+    "type": "object"
+  },
+  "sync_integration": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "sync_integrationArguments",
+    "type": "object"
+  },
+  "task_filter_counts": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Progress towards payment",
+        "title": "Billing"
+      },
+      "blocked": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "true = only tasks held up by open work; false = only ones nothing is blocking. Leave unset for both.",
+        "title": "Blocked"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "mine": {
+        "default": false,
+        "description": "Only tasks assigned to the caller",
+        "title": "Mine",
+        "type": "boolean"
+      },
+      "my_areas": {
+        "default": false,
+        "description": "Only work in the crafts the caller does",
+        "title": "My Areas",
+        "type": "boolean"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "high",
+              "urgent",
+              "none"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency; `none` is the ones nobody has triaged",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "running": {
+        "default": false,
+        "description": "Only tasks with a timer running right now",
+        "title": "Running",
+        "type": "boolean"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "trackable": {
+        "default": false,
+        "description": "Only tasks the caller may put a timer on",
+        "title": "Trackable",
+        "type": "boolean"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one person, across projects (from `list_users`)",
+        "title": "User Id"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "title": "task_filter_countsArguments",
+    "type": "object"
+  },
+  "task_graph": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Progress towards payment",
+        "title": "Billing"
+      },
+      "blocked": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "true = only tasks held up by open work; false = only ones nothing is blocking. Leave unset for both.",
+        "title": "Blocked"
+      },
+      "cursor": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Which page: the `next_cursor` of the page before; omit for the first",
+        "title": "Cursor"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "key": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "One task by the key people type — NUC-142, case-insensitive",
+        "title": "Key"
+      },
+      "limit": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How many linked tasks to describe at most (1-300, default 300)",
+        "title": "Limit"
+      },
+      "mine": {
+        "default": false,
+        "description": "Only tasks assigned to the caller",
+        "title": "Mine",
+        "type": "boolean"
+      },
+      "my_areas": {
+        "default": false,
+        "description": "Only work in the crafts the caller does",
+        "title": "My Areas",
+        "type": "boolean"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "high",
+              "urgent",
+              "none"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency; `none` is the ones nobody has triaged",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "running": {
+        "default": false,
+        "description": "Only tasks with a timer running right now",
+        "title": "Running",
+        "type": "boolean"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "trackable": {
+        "default": false,
+        "description": "Only tasks the caller may put a timer on",
+        "title": "Trackable",
+        "type": "boolean"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one person, across projects (from `list_users`)",
+        "title": "User Id"
+      },
+      "with_cancelled": {
+        "default": false,
+        "description": "Include cancelled tasks",
+        "title": "With Cancelled",
+        "type": "boolean"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "title": "task_graphArguments",
+    "type": "object"
+  },
+  "task_totals": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Progress towards payment",
+        "title": "Billing"
+      },
+      "blocked": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "true = only tasks held up by open work; false = only ones nothing is blocking. Leave unset for both.",
+        "title": "Blocked"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "mine": {
+        "default": false,
+        "description": "Only tasks assigned to the caller",
+        "title": "Mine",
+        "type": "boolean"
+      },
+      "my_areas": {
+        "default": false,
+        "description": "Only work in the crafts the caller does",
+        "title": "My Areas",
+        "type": "boolean"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "high",
+              "urgent",
+              "none"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency; `none` is the ones nobody has triaged",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "running": {
+        "default": false,
+        "description": "Only tasks with a timer running right now",
+        "title": "Running",
+        "type": "boolean"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "trackable": {
+        "default": false,
+        "description": "Only tasks the caller may put a timer on",
+        "title": "Trackable",
+        "type": "boolean"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one person, across projects (from `list_users`)",
+        "title": "User Id"
+      },
+      "with_cancelled": {
+        "default": false,
+        "description": "Count cancelled tasks in as well",
+        "title": "With Cancelled",
+        "type": "boolean"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "title": "task_totalsArguments",
+    "type": "object"
+  },
+  "task_totals_breakdown": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Progress towards payment",
+        "title": "Billing"
+      },
+      "blocked": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "true = only tasks held up by open work; false = only ones nothing is blocking. Leave unset for both.",
+        "title": "Blocked"
+      },
+      "by": {
+        "anyOf": [
+          {
+            "enum": [
+              "project",
+              "person",
+              "recipient"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "project, person (who tracked the time) or recipient (margin only); omit for the default",
+        "title": "By"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "figure": {
+        "description": "Which figure of `task_totals` to split",
+        "enum": [
+          "earned",
+          "cost",
+          "billed",
+          "margin",
+          "my_margin"
+        ],
+        "title": "Figure",
+        "type": "string"
+      },
+      "mine": {
+        "default": false,
+        "description": "Only tasks assigned to the caller",
+        "title": "Mine",
+        "type": "boolean"
+      },
+      "my_areas": {
+        "default": false,
+        "description": "Only work in the crafts the caller does",
+        "title": "My Areas",
+        "type": "boolean"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "high",
+              "urgent",
+              "none"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency; `none` is the ones nobody has triaged",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "running": {
+        "default": false,
+        "description": "Only tasks with a timer running right now",
+        "title": "Running",
+        "type": "boolean"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "trackable": {
+        "default": false,
+        "description": "Only tasks the caller may put a timer on",
+        "title": "Trackable",
+        "type": "boolean"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one person, across projects (from `list_users`)",
+        "title": "User Id"
+      },
+      "with_cancelled": {
+        "default": false,
+        "description": "Count cancelled tasks in as well",
+        "title": "With Cancelled",
+        "type": "boolean"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "required": [
+      "figure"
+    ],
+    "title": "task_totals_breakdownArguments",
+    "type": "object"
+  },
+  "unarchive_notification": {
+    "additionalProperties": false,
+    "properties": {
+      "entry_id": {
+        "description": "Entry id, from `list_notifications`",
+        "title": "Entry Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id"
+    ],
+    "title": "unarchive_notificationArguments",
+    "type": "object"
+  },
+  "unlink_tasks": {
+    "additionalProperties": false,
+    "properties": {
+      "link_id": {
+        "description": "Link id",
+        "title": "Link Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "link_id"
+    ],
+    "title": "unlink_tasksArguments",
+    "type": "object"
+  },
+  "update_area": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "description": "Area id",
+        "title": "Area Id",
+        "type": "string"
+      },
+      "handle": {
+        "anyOf": [
+          {
+            "maxLength": 32,
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$|^$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What to type to name its people; '' takes it away",
+        "title": "Handle"
+      },
+      "is_active": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "False retires it — it stops being offered",
+        "title": "Is Active"
+      },
+      "title": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Rename it",
+        "title": "Title"
+      }
+    },
+    "required": [
+      "area_id"
+    ],
+    "title": "update_areaArguments",
+    "type": "object"
+  },
+  "update_company": {
+    "additionalProperties": false,
+    "properties": {
+      "address": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Address"
+      },
+      "company_id": {
+        "description": "Company id, from `list_companies`",
+        "title": "Company Id",
+        "type": "string"
+      },
+      "email": {
+        "anyOf": [
+          {
+            "maxLength": 254,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Email"
+      },
+      "is_default": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Make it THE default",
+        "title": "Is Default"
+      },
+      "legal_name": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Legal Name"
+      },
+      "phone": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Phone"
+      },
+      "registration_number": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Registration Number"
+      },
+      "title": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Title"
+      },
+      "vat_number": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Vat Number"
+      },
+      "website": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Website"
+      }
+    },
+    "required": [
+      "company_id"
+    ],
+    "title": "update_companyArguments",
+    "type": "object"
+  },
+  "update_epic": {
+    "additionalProperties": false,
+    "properties": {
+      "description": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Rewrite what it is for",
+        "title": "Description"
+      },
+      "epic_id": {
+        "description": "Epic id",
+        "title": "Epic Id",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "open",
+              "done"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "`done` closes it and stamps the moment; `open` reopens it",
+        "title": "Status"
+      },
+      "title": {
+        "anyOf": [
+          {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Rename it",
+        "title": "Title"
+      }
+    },
+    "required": [
+      "epic_id"
+    ],
+    "title": "update_epicArguments",
+    "type": "object"
+  },
+  "update_expense": {
+    "additionalProperties": false,
+    "properties": {
+      "amount": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What is paid per charge",
+        "title": "Amount"
+      },
+      "currency": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Currency it is paid in",
+        "title": "Currency"
+      },
+      "ended_on": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The day it was cancelled. It stops charging and stays in the history",
+        "title": "Ended On"
+      },
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      },
+      "is_variable": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The provider decides the figure each time — a CDN billed on traffic. `amount` is then the last known one, and every charge waits to be confirmed",
+        "title": "Is Variable"
+      },
+      "next_charge_on": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Move the next charge — and the arrangement's day of the month with it",
+        "title": "Next Charge On"
+      },
+      "note": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Anything worth keeping",
+        "title": "Note"
+      },
+      "payment_fee": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What it costs to pay it, on top of the amount",
+        "title": "Payment Fee"
+      },
+      "period": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "one_off, monthly or annual",
+        "title": "Period"
+      },
+      "shares": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "A new split; must sum to 100",
+        "title": "Shares"
+      },
+      "title": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What it is",
+        "title": "Title"
+      },
+      "vendor": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Who is paid",
+        "title": "Vendor"
+      }
+    },
+    "required": [
+      "expense_id"
+    ],
+    "title": "update_expenseArguments",
+    "type": "object"
+  },
+  "update_expense_charge": {
+    "additionalProperties": false,
+    "properties": {
+      "amount": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What it cost us. The billed figure follows from the share",
+        "title": "Amount"
+      },
+      "charge_id": {
+        "description": "Charge id",
+        "title": "Charge Id",
+        "type": "string"
+      },
+      "charged_on": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Move it to another date",
+        "title": "Charged On"
+      },
+      "fee": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What paying it cost",
+        "title": "Fee"
+      },
+      "paid_on": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The day it was paid",
+        "title": "Paid On"
+      }
+    },
+    "required": [
+      "charge_id"
+    ],
+    "title": "update_expense_chargeArguments",
+    "type": "object"
+  },
+  "update_integration": {
+    "additionalProperties": false,
+    "properties": {
+      "api_token": {
+        "default": "",
+        "description": "New token. Empty keeps the stored one.",
+        "title": "Api Token",
+        "type": "string"
+      },
+      "base_url": {
+        "anyOf": [
+          {
+            "maxLength": 2083,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The tracker's base URL",
+        "title": "Base Url"
+      },
+      "external_project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The target on the tracker side: an OpenProject project id, or a GitLab repository",
+        "title": "External Project Id"
+      },
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      },
+      "is_active": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Whether scheduled syncs run; omit to leave as is",
+        "title": "Is Active"
+      },
+      "webhook_secret": {
+        "default": "",
+        "description": "New webhook secret. Empty keeps the stored one.",
+        "title": "Webhook Secret",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "update_integrationArguments",
+    "type": "object"
+  },
+  "update_invoice": {
+    "additionalProperties": false,
+    "properties": {
+      "budget_saved": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Budget saved, if any",
+        "title": "Budget Saved"
+      },
+      "invoice_date": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Issue date, YYYY-MM-DD",
+        "title": "Invoice Date"
+      },
+      "invoice_id": {
+        "description": "Invoice id",
+        "title": "Invoice Id",
+        "type": "string"
+      },
+      "paid_at": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Paid at (ISO 8601)",
+        "title": "Paid At"
+      },
+      "unpay": {
+        "default": false,
+        "description": "Mark it NOT paid. Use this rather than a null date.",
+        "title": "Unpay",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "invoice_id"
+    ],
+    "title": "update_invoiceArguments",
+    "type": "object"
+  },
+  "update_payment_account": {
+    "additionalProperties": false,
+    "properties": {
+      "account_id": {
+        "description": "Account id",
+        "title": "Account Id",
+        "type": "string"
+      },
+      "fields": {
+        "additionalProperties": true,
+        "description": "ONLY the fields to change, named as `get_payment_account` returns them. Anything left out keeps its current value.",
+        "title": "Fields",
+        "type": "object"
+      }
+    },
+    "required": [
+      "account_id",
+      "fields"
+    ],
+    "title": "update_payment_accountArguments",
+    "type": "object"
+  },
+  "update_payout_method": {
+    "additionalProperties": false,
+    "properties": {
+      "label": {
+        "anyOf": [
+          {
+            "maxLength": 64,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "New name; omit to leave it",
+        "title": "Label"
+      },
+      "make_default": {
+        "default": false,
+        "description": "Make it the default",
+        "title": "Make Default",
+        "type": "boolean"
+      },
+      "method_id": {
+        "description": "Payout method id",
+        "title": "Method Id",
+        "type": "string"
+      },
+      "retired": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "True retires it; false brings a retired one back (announced like a new one)",
+        "title": "Retired"
+      }
+    },
+    "required": [
+      "method_id"
+    ],
+    "title": "update_payout_methodArguments",
+    "type": "object"
+  },
+  "update_performer": {
+    "additionalProperties": false,
+    "properties": {
+      "area_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "REPLACES the crafts this seat may use; omit to leave them alone",
+        "title": "Area Ids"
+      },
+      "clear_curator": {
+        "default": false,
+        "description": "Remove the curator. Use this rather than omitting one.",
+        "title": "Clear Curator",
+        "type": "boolean"
+      },
+      "curator_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Managing user, if any",
+        "title": "Curator Id"
+      },
+      "inner_price": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What we pay them",
+        "title": "Inner Price"
+      },
+      "outer_price": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What the client is billed",
+        "title": "Outer Price"
+      },
+      "performer_id": {
+        "description": "Performer id",
+        "title": "Performer Id",
+        "type": "string"
+      },
+      "position": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Their role on this project",
+        "title": "Position"
+      },
+      "work_format": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "hour, part or full",
+        "title": "Work Format"
+      }
+    },
+    "required": [
+      "performer_id"
+    ],
+    "title": "update_performerArguments",
+    "type": "object"
+  },
+  "update_project": {
+    "additionalProperties": false,
+    "properties": {
+      "bill_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The client's requisites as printed on the invoice; empty names the project owners",
+        "title": "Bill To"
+      },
+      "clear_payment_account": {
+        "default": false,
+        "description": "Bill through the default company account again. Use this rather than omitting the account.",
+        "title": "Clear Payment Account",
+        "type": "boolean"
+      },
+      "currency": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Billing currency for this project: UAH, USD or EUR",
+        "title": "Currency"
+      },
+      "default_outer_price": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What an hour on this project sells for, for people added later",
+        "title": "Default Outer Price"
+      },
+      "description": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What the project is",
+        "title": "Description"
+      },
+      "fee": {
+        "anyOf": [
+          {
+            "exclusiveMaximum": 100,
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Agency fee, percent",
+        "title": "Fee"
+      },
+      "is_active": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "False archives the project — no new tasks or timers, history kept; true restores it",
+        "title": "Is Active"
+      },
+      "key_prefix": {
+        "anyOf": [
+          {
+            "maxLength": 8,
+            "pattern": "^[A-Z][A-Z0-9]{1,7}$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What leads this project's task keys. Keys already handed out are NOT rewritten",
+        "title": "Key Prefix"
+      },
+      "manager_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Who runs this project. Sending a list REPLACES it, so read the project first and send the whole roster, not just the addition",
+        "title": "Manager Ids"
+      },
+      "owner_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Owning client user ids",
+        "title": "Owner Ids"
+      },
+      "payment_account_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Account to be paid into, from `list_payment_accounts`",
+        "title": "Payment Account Id"
+      },
+      "project_id": {
+        "description": "Project id",
+        "title": "Project Id",
+        "type": "string"
+      },
+      "title": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Project title",
+        "title": "Title"
+      }
+    },
+    "required": [
+      "project_id"
+    ],
+    "title": "update_projectArguments",
+    "type": "object"
+  },
+  "update_task": {
+    "additionalProperties": false,
+    "properties": {
+      "area_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "REPLACES the crafts; omit to leave them alone",
+        "title": "Area Ids"
+      },
+      "clear_epic": {
+        "default": false,
+        "description": "Take it out of its epic. Use this rather than omitting one.",
+        "title": "Clear Epic",
+        "type": "boolean"
+      },
+      "collaborator_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "REPLACES who is helping; omit to leave them alone",
+        "title": "Collaborator Ids"
+      },
+      "description": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Longer description",
+        "title": "Description"
+      },
+      "done_time": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "When it was actually finished (ISO 8601); omit to keep it in step with the status",
+        "title": "Done Time"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Move it into this epic — from `list_epics`, same project",
+        "title": "Epic Id"
+      },
+      "performer_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Who it is for",
+        "title": "Performer Id"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "",
+              "low",
+              "high",
+              "urgent"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How urgent; '' clears it, omit to leave it alone",
+        "title": "Priority"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      },
+      "title": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Task title",
+        "title": "Title"
+      }
+    },
+    "required": [
+      "task_id"
+    ],
+    "title": "update_taskArguments",
+    "type": "object"
+  },
+  "update_time_entry": {
+    "additionalProperties": false,
+    "properties": {
+      "ended_at": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "When it ended, ISO 8601. Give this OR `hours`, not both",
+        "title": "Ended At"
+      },
+      "entry_id": {
+        "description": "Time entry id",
+        "title": "Entry Id",
+        "type": "string"
+      },
+      "hours": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "maximum": 24,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How long it took, e.g. 1.5. Give this OR `ended_at`",
+        "title": "Hours"
+      },
+      "note": {
+        "default": "",
+        "description": "What was done",
+        "maxLength": 500,
+        "title": "Note",
+        "type": "string"
+      },
+      "started_at": {
+        "description": "When the work started, ISO 8601 with its offset — e.g. 2026-10-10T14:00:00+03:00",
+        "title": "Started At",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id",
+      "started_at"
+    ],
+    "title": "update_time_entryArguments",
+    "type": "object"
+  },
+  "update_user": {
+    "additionalProperties": false,
+    "properties": {
+      "area_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "REPLACES the default crafts. Seats they already hold keep theirs",
+        "title": "Area Ids"
+      },
+      "full_time": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Base full-time rate",
+        "title": "Full Time"
+      },
+      "hour": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Base hourly rate",
+        "title": "Hour"
+      },
+      "is_active": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Deactivate or reinstate",
+        "title": "Is Active"
+      },
+      "must_change_password": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Hold their next sign-in until they set a new password",
+        "title": "Must Change Password"
+      },
+      "must_setup_2fa": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Hold their next sign-in until an authenticator is enrolled",
+        "title": "Must Setup 2Fa"
+      },
+      "part_time": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Base part-time rate",
+        "title": "Part Time"
+      },
+      "public_name": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Display name",
+        "title": "Public Name"
+      },
+      "roles": {
+        "anyOf": [
+          {
+            "items": {
+              "enum": [
+                "admin",
+                "pm",
+                "executor",
+                "client"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "REPLACES every role they hold; never empty",
+        "title": "Roles"
+      },
+      "user_id": {
+        "description": "User id",
+        "title": "User Id",
+        "type": "string"
+      },
+      "username": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Their login name. Blank is refused, not \"leave it\"",
+        "title": "Username"
+      }
+    },
+    "required": [
+      "user_id"
+    ],
+    "title": "update_userArguments",
+    "type": "object"
+  },
+  "whoami": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "whoamiArguments",
+    "type": "object"
+  }
+}
