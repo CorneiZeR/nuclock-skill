@@ -3821,6 +3821,19 @@
   "log_time": {
     "additionalProperties": false,
     "properties": {
+      "date": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The day it was worked, YYYY-MM-DD. Omitted, today",
+        "title": "Date"
+      },
       "hours": {
         "description": "How long it took, e.g. 1.5",
         "exclusiveMinimum": 0,
@@ -3834,19 +3847,6 @@
         "maxLength": 500,
         "title": "Note",
         "type": "string"
-      },
-      "started_at": {
-        "anyOf": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "null"
-          }
-        ],
-        "default": null,
-        "description": "When the work started, ISO 8601 with its offset — e.g. 2026-10-10T14:00:00+03:00. Omitted, it has just ended: now less `hours`",
-        "title": "Started At"
       },
       "task_id": {
         "description": "Task id",
@@ -6797,6 +6797,19 @@
   "update_time_entry": {
     "additionalProperties": false,
     "properties": {
+      "date": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "A new day, YYYY-MM-DD",
+        "title": "Date"
+      },
       "entry_id": {
         "description": "Time entry id",
         "title": "Entry Id",
@@ -6830,19 +6843,6 @@
         "default": null,
         "description": "A new note",
         "title": "Note"
-      },
-      "started_at": {
-        "anyOf": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "null"
-          }
-        ],
-        "default": null,
-        "description": "A new start, ISO 8601 with its offset",
-        "title": "Started At"
       }
     },
     "required": [

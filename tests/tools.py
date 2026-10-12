@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Every tool call this plugin shows is one the server takes.
 
-The documents teach calls in prose — `log_time(task_id, hours, started_at,
-note)` — and prose is checked by nothing. When the server moved `log_time`
+The documents teach calls in prose — `log_time(task_id, hours, date, note)` —
+and prose is checked by nothing. When the server moved `log_time`
 from `date` to `started_at` on 2026-10-10, the skill and `nu-untracked` went on
 teaching the old shape, and a model that followed them was refused.
 

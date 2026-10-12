@@ -163,17 +163,17 @@ later somebody writes "about two hours" into a form. What to do instead:
   stretch of work. It costs one call and answers the only question that
   matters.
 * **When it was missed, backfill deliberately**: `log_time(task_id, hours,
-  started_at, note)`: how long it ran, and when it began, with its offset
-  (`2026-10-10T14:00:00+03:00`) — left out, the span ends now. Work spread over
-  several days is one call per span. The note says what the hours were — "review fixes, merge, deploy" — rather than
+  date, note)`: how long it ran, and the day (`2026-10-10`) — left out, today.
+  The server places it inside the day; there is no start to give. Work spread
+  over several days is one call per day. The note says what the hours were — "review fixes, merge, deploy" — rather than
   leaving a bare number. A note is what makes an hour
   defensible three weeks later.
 * **Correct rather than guess.** A timer that ran through lunch gets the length
   it really had: `update_time_entry(entry_id, hours, note)` — only what is
-  given changes, and a new `started_at` keeps the length. Time never moves
+  given changes, and a new `date` moves it to that day. Time never moves
   between tasks, so a timer on the wrong task is moved by hand, and without
   losing it: read the entry (`get_time_entry(entry_id)`), log the same span on
-  the right task (`log_time(task_id, hours, started_at, note)`), and only once
+  the right task (`log_time(task_id, hours, date, note)`), and only once
   that has been written `delete_time_entry(entry_id)`. Copy first, delete
   second: a refused copy leaves the original where it was. A corrected entry
   with a note beats an invented one.
