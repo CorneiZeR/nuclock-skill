@@ -172,9 +172,11 @@ later somebody writes "about two hours" into a form. What to do instead:
   it really had: `update_time_entry(entry_id, hours, note)` — only what is
   given changes, and a new `date` moves it to that day. Time never moves
   between tasks, so a timer on the wrong task is moved by hand, and without
-  losing it: read the entry (`get_time_entry(entry_id)`), log the same span on
-  the right task (`log_time(task_id, hours, date, note)`), and only once
-  that has been written `delete_time_entry(entry_id)`. Copy first, delete
+  losing it: read the entry (`get_time_entry(entry_id)`), log the same day and
+  hours on the right task (`log_time(task_id, hours, date, note)`), and only
+  once that has been written `delete_time_entry(entry_id)`. The server places
+  the copy inside its day, so where the original sat in the day is not kept —
+  put it in the note if it matters. Copy first, delete
   second: a refused copy leaves the original where it was. A corrected entry
   with a note beats an invented one.
 * **Hours are read from the entries, never from a task's own field.** A task
