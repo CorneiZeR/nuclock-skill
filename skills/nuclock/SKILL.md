@@ -172,13 +172,21 @@ later somebody writes "about two hours" into a form. What to do instead:
   it really had: `update_time_entry(entry_id, hours, note)` — only what is
   given changes, and a new `started_at` keeps the length. Time never moves
   between tasks, so a timer on the wrong task is moved by hand, and without
-  losing it: first read the entry (`get_time_entry(entry_id)`) and keep its
-  `started_at`, its length and its note; then `delete_time_entry(entry_id)`;
-  then `log_time(task_id, hours, started_at, note)` on the right task with
-  what you kept. Logging first does not work — the copy sits on the same
-  person's same hour and is refused as an overlap. If the log is refused,
-  write the kept values back on the original task. A corrected entry with a
-  note beats an invented one.
+  losing it:
+  1. Read the entry (`get_time_entry(entry_id)`) and keep its `started_at`,
+     its length and its note.
+  2. Check the right task takes time — `get_task(task_id)`: yours, and not on
+     an invoice. Refused there, stop: nothing has been deleted yet.
+  3. `delete_time_entry(entry_id)`, then `log_time(task_id, hours, started_at,
+     note)` on the right task with what you kept.
+
+  Logging first does not work: the copy sits on the same person's same hour
+  and is refused as an overlap. After the delete that hour is free, so the
+  copy is refused only when the original already overlapped another entry of
+  theirs (written before overlaps were refused). Then restoring it would be
+  refused too — so log the kept span around that other entry (as two spans,
+  or shorter), and say so in the note. A corrected entry with a note beats an
+  invented one.
 * **Hours are read from the entries, never from a task's own field.** A task
   shows `total_seconds`; untracked work is added by hand, and that is the only
   way it gets there.
