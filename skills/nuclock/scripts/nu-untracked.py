@@ -108,7 +108,7 @@ def main() -> int:
     print(f'days with commits in {repo.name} and no time recorded:')
     for day in missing:
         print(f'  {day}  {commits[day]} commit(s)')
-    print('\nBackfill what you can vouch for: log_time(task_id, started_at, hours | ended_at, note).')
+    print('\nBackfill what you can vouch for: log_time(task_id, hours, started_at, note).')
     print('A note saying what the hours were is what makes them defensible later.')
     return 0
 

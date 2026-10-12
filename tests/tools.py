@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Every tool call this plugin shows is one the server takes.
 
-The documents teach calls in prose — `log_time(task_id, started_at, hours,
+The documents teach calls in prose — `log_time(task_id, hours, started_at,
 note)` — and prose is checked by nothing. When the server moved `log_time`
 from `date` to `started_at` on 2026-10-10, the skill and `nu-untracked` went on
 teaching the old shape, and a model that followed them was refused.
@@ -59,7 +59,7 @@ def call_problems() -> tuple[int, list[str]]:
                 part = part.strip()
                 if not part or part in ELIDED:
                     continue
-                # `hours | ended_at` offers a choice between two arguments.
+                # `a | b` offers a choice between two arguments.
                 given += [alt.split('=')[0].strip() for alt in part.split('|')]
             unknown = [arg for arg in given if arg not in schema.get('properties', {})]
             if unknown:

@@ -162,15 +162,17 @@ later somebody writes "about two hours" into a form. What to do instead:
 * **`my_running_timer()` at the start of a session**, and at the start of any
   stretch of work. It costs one call and answers the only question that
   matters.
-* **When it was missed, backfill deliberately**: `log_time(task_id,
-  started_at, hours | ended_at, note)`: when the work began, with its offset
-  (`2026-10-10T14:00:00+03:00`), and how long it ran or when it stopped. The
-  note says what the hours were — "review fixes, merge, deploy" — rather than
+* **When it was missed, backfill deliberately**: `log_time(task_id, hours,
+  started_at, note)`: how long it ran, and when it began, with its offset
+  (`2026-10-10T14:00:00+03:00`) — left out, the span ends now. Work spread over
+  several days is one call per span. The note says what the hours were — "review fixes, merge, deploy" — rather than
   leaving a bare number. A note is what makes an hour
   defensible three weeks later.
-* **Correct rather than guess.** `update_time_entry` exists for the case where
-  the timer ran on the wrong task, or ran through lunch. A corrected entry with
-  a note beats an invented one.
+* **Correct rather than guess.** A timer that ran through lunch gets the length
+  it really had: `update_time_entry(entry_id, hours, note)` — only what is
+  given changes, and a new `started_at` keeps the length. A timer on the wrong
+  task is deleted and logged again on the right one; time never moves between
+  tasks. A corrected entry with a note beats an invented one.
 * **Hours are read from the entries, never from a task's own field.** A task
   shows `total_seconds`; untracked work is added by hand, and that is the only
   way it gets there.
