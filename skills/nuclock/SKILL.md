@@ -162,15 +162,23 @@ later somebody writes "about two hours" into a form. What to do instead:
 * **`my_running_timer()` at the start of a session**, and at the start of any
   stretch of work. It costs one call and answers the only question that
   matters.
-* **When it was missed, backfill deliberately**: `log_time(task_id,
-  started_at, hours | ended_at, note)`: when the work began, with its offset
-  (`2026-10-10T14:00:00+03:00`), and how long it ran or when it stopped. The
-  note says what the hours were — "review fixes, merge, deploy" — rather than
+* **When it was missed, backfill deliberately**: `log_time(task_id, hours,
+  date, note)`: how long it ran, and the day (`2026-10-10`) — left out, today.
+  The server places it inside the day; there is no start to give. Work spread
+  over several days is one call per day. The note says what the hours were — "review fixes, merge, deploy" — rather than
   leaving a bare number. A note is what makes an hour
   defensible three weeks later.
-* **Correct rather than guess.** `update_time_entry` exists for the case where
-  the timer ran on the wrong task, or ran through lunch. A corrected entry with
-  a note beats an invented one.
+* **Correct rather than guess.** A timer that ran through lunch gets the length
+  it really had: `update_time_entry(entry_id, hours, note)` — only what is
+  given changes, and a new `date` moves it to that day. Time never moves
+  between tasks, so a timer on the wrong task is moved by hand, and without
+  losing it: read the entry (`get_time_entry(entry_id)`), log the same day and
+  hours on the right task (`log_time(task_id, hours, date, note)`), and only
+  once that has been written `delete_time_entry(entry_id)`. The server places
+  the copy inside its day, so where the original sat in the day is not kept —
+  put it in the note if it matters. Copy first, delete
+  second: a refused copy leaves the original where it was. A corrected entry
+  with a note beats an invented one.
 * **Hours are read from the entries, never from a task's own field.** A task
   shows `total_seconds`; untracked work is added by hand, and that is the only
   way it gets there.

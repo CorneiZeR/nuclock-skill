@@ -3821,7 +3821,7 @@
   "log_time": {
     "additionalProperties": false,
     "properties": {
-      "ended_at": {
+      "date": {
         "anyOf": [
           {
             "type": "string"
@@ -3831,34 +3831,21 @@
           }
         ],
         "default": null,
-        "description": "When it ended, ISO 8601. Give this OR `hours`, not both",
-        "title": "Ended At"
+        "description": "The day it was worked, YYYY-MM-DD. Omitted, today",
+        "title": "Date"
       },
       "hours": {
-        "anyOf": [
-          {
-            "exclusiveMinimum": 0,
-            "maximum": 24,
-            "type": "number"
-          },
-          {
-            "type": "null"
-          }
-        ],
-        "default": null,
-        "description": "How long it took, e.g. 1.5. Give this OR `ended_at`",
-        "title": "Hours"
+        "description": "How long it took, e.g. 1.5",
+        "exclusiveMinimum": 0,
+        "maximum": 24,
+        "title": "Hours",
+        "type": "number"
       },
       "note": {
         "default": "",
         "description": "What was done",
         "maxLength": 500,
         "title": "Note",
-        "type": "string"
-      },
-      "started_at": {
-        "description": "When the work started, ISO 8601 with its offset — e.g. 2026-10-10T14:00:00+03:00",
-        "title": "Started At",
         "type": "string"
       },
       "task_id": {
@@ -3882,7 +3869,7 @@
     },
     "required": [
       "task_id",
-      "started_at"
+      "hours"
     ],
     "title": "log_timeArguments",
     "type": "object"
@@ -6810,7 +6797,7 @@
   "update_time_entry": {
     "additionalProperties": false,
     "properties": {
-      "ended_at": {
+      "date": {
         "anyOf": [
           {
             "type": "string"
@@ -6820,8 +6807,8 @@
           }
         ],
         "default": null,
-        "description": "When it ended, ISO 8601. Give this OR `hours`, not both",
-        "title": "Ended At"
+        "description": "A new day, YYYY-MM-DD",
+        "title": "Date"
       },
       "entry_id": {
         "description": "Time entry id",
@@ -6840,25 +6827,26 @@
           }
         ],
         "default": null,
-        "description": "How long it took, e.g. 1.5. Give this OR `ended_at`",
+        "description": "A new length, e.g. 1.5",
         "title": "Hours"
       },
       "note": {
-        "default": "",
-        "description": "What was done",
-        "maxLength": 500,
-        "title": "Note",
-        "type": "string"
-      },
-      "started_at": {
-        "description": "When the work started, ISO 8601 with its offset — e.g. 2026-10-10T14:00:00+03:00",
-        "title": "Started At",
-        "type": "string"
+        "anyOf": [
+          {
+            "maxLength": 500,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "A new note",
+        "title": "Note"
       }
     },
     "required": [
-      "entry_id",
-      "started_at"
+      "entry_id"
     ],
     "title": "update_time_entryArguments",
     "type": "object"
