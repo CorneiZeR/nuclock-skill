@@ -170,9 +170,15 @@ later somebody writes "about two hours" into a form. What to do instead:
   defensible three weeks later.
 * **Correct rather than guess.** A timer that ran through lunch gets the length
   it really had: `update_time_entry(entry_id, hours, note)` — only what is
-  given changes, and a new `started_at` keeps the length. A timer on the wrong
-  task is deleted and logged again on the right one; time never moves between
-  tasks. A corrected entry with a note beats an invented one.
+  given changes, and a new `started_at` keeps the length. Time never moves
+  between tasks, so a timer on the wrong task is moved by hand, and without
+  losing it: first read the entry (`get_time_entry(entry_id)`) and keep its
+  `started_at`, its length and its note; then `delete_time_entry(entry_id)`;
+  then `log_time(task_id, hours, started_at, note)` on the right task with
+  what you kept. Logging first does not work — the copy sits on the same
+  person's same hour and is refused as an overlap. If the log is refused,
+  write the kept values back on the original task. A corrected entry with a
+  note beats an invented one.
 * **Hours are read from the entries, never from a task's own field.** A task
   shows `total_seconds`; untracked work is added by hand, and that is the only
   way it gets there.
