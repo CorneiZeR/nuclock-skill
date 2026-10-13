@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-QUEUE = Path(os.environ.get('NUCLOCK_QUEUE', HERE.parent / 'scripts' / 'nu-queue.py'))
+QUEUE = Path(os.environ.get('NUCLOCK_QUEUE', HERE.parent / 'skills' / 'nuclock' / 'scripts' / 'nu-queue.py'))
 
 
 def main() -> int:

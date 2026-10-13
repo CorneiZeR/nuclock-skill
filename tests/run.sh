@@ -141,6 +141,16 @@ stub 2 'unreachable'
 out=$(echo '{"session_id":"f"}' | python3 hooks/session-end.py)
 check 'quiet when the tracker cannot be asked' '' "$out"
 
+echo 'the scripts behind them'
+
+# Every other check points the hooks at a stub, so a default path naming no
+# file passed them all: `session-start.py` ran a missing `nu-queue.py`, got
+# exit 2 back, and said nothing in every session.
+for pair in session-start.py:QUEUE editing-without-a-timer.py:RUNNING session-end.py:RUNNING; do
+  found=$(env -u NUCLOCK_QUEUE -u NUCLOCK_RUNNING python3 -c 'import runpy, sys; print(runpy.run_path(sys.argv[1])[sys.argv[2]].is_file())' "hooks/${pair%%:*}" "${pair##*:}")
+  check "${pair%%:*} finds its script" 'True' "$found"
+done
+
 echo
 if [ "$failures" -eq 0 ]; then
   echo 'all good'
