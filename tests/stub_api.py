@@ -51,7 +51,8 @@ class Handler(BaseHTTPRequestHandler):
             # `tool_schemas.json`; the REST filter is assumed to match the
             # same way, and whole. An empty key is a key.
             tasks = SCENARIO.get('tasks', [])
-            if 'key' in params:
+            # `ignores_key` stands in for a server that drops the filter.
+            if 'key' in params and not SCENARIO.get('ignores_key'):
                 wanted = params['key'][0].casefold()
                 tasks = [task for task in tasks if task['key'].casefold() == wanted]
             self._answer({'items': tasks})

@@ -156,9 +156,13 @@ def task_by_key(key: str) -> dict:
     else's task give the same empty answer, which is the same thing from the
     outside and deliberately so.
     """
+    if not key.strip():
+        raise ApiError('no task key given')
     query = urllib.parse.urlencode({'key': key, 'with_cancelled': 'true', 'limit': 1})
     found = rows(get(f'/v1/project/tasks?{query}'))
-    if not found:
+    # A filter the server did not apply returns the first task of the list,
+    # and the timer would start on that one.
+    if not found or (found[0].get('key') or '').casefold() != key.casefold():
         raise ApiError(f'no task {key} that this key can see')
     return found[0]
 
