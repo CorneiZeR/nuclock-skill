@@ -104,20 +104,20 @@ an answer about what that person may see.
 
 | Script | What it answers |
 | --- | --- |
-| `scripts/nu-queue.py` | what is running, what is in flight, what is next — and which rows are blocked |
-| `scripts/nu-start.py` | blockers → `in_progress` → timer, as one command |
-| `scripts/nu-finish.py` | timer off; `--done` closes it when nothing is still open |
-| `scripts/nu-running.py` | what is being tracked right now (exit 1 when nothing is) |
-| `scripts/nu-untracked.py` | days with commits and no time recorded |
+| `skills/nuclock/scripts/nu-queue.py` | what is running, what is in flight, what is next — and which rows are blocked |
+| `skills/nuclock/scripts/nu-start.py` | blockers → `in_progress` → timer, as one command |
+| `skills/nuclock/scripts/nu-finish.py` | timer off; `--done` closes it when nothing is still open |
+| `skills/nuclock/scripts/nu-running.py` | what is being tracked right now (exit 1 when nothing is) |
+| `skills/nuclock/scripts/nu-untracked.py` | days with commits and no time recorded |
 
 `nu-start.py` and `nu-finish.py` are the two that WRITE, and they write
 because somebody typed them with a task named. The hooks never do: one that
 started a timer would be recording time nobody can vouch for.
 
 ```
-scripts/nu-start.py NUC-142           # refuses a blocked task; --anyway overrides
-scripts/nu-finish.py NUC-142          # stop the clock, leave the status alone
-scripts/nu-finish.py NUC-142 --done   # …and close it, if no merge request is open
+skills/nuclock/scripts/nu-start.py NUC-142           # refuses a blocked task; --anyway overrides
+skills/nuclock/scripts/nu-finish.py NUC-142          # stop the clock, leave the status alone
+skills/nuclock/scripts/nu-finish.py NUC-142 --done   # …and close it, if no merge request is open
 ```
 
 `nu-untracked.py` compares two records — git's log and the tracker's entries —
@@ -126,7 +126,7 @@ remember, not a measurement: nothing can know what somebody was doing, and
 backfilling is a decision the person makes with `log_time`.
 
 ```bash
-scripts/nu-untracked.py --days 14 --repo ../nuclock_back
+skills/nuclock/scripts/nu-untracked.py --days 14 --repo ../nuclock_back
 ```
 
 ## Tests
