@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(python3:*)
+allowed-tools: Bash(python3 "${CLAUDE_PLUGIN_ROOT}/skills/nuclock/scripts/nu-queue.py":*)
 description: What is running, what is in flight, what is next — and what is blocked
 ---
 
