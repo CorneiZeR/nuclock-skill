@@ -25,7 +25,7 @@ Three, and none of them writes anything to the tracker:
 | Hook | When | What it says |
 | --- | --- | --- |
 | `session-start.py` | a session opens | what is running, what is in flight, what is next |
-| `editing-without-a-timer.py` | the first edit in a session | “no timer is running, and this session is changing code” |
+| `editing-without-a-timer.py` | an edit while no timer runs, once per session | “no timer is running, and this session is changing code” |
 | `session-end.py` | the session ends | “a timer is still running on NUC-123” |
 
 **They warn; they never block and never write time.** A hook that started a
@@ -52,9 +52,10 @@ them current.
 
 **The hooks come with it, and that is worth one sentence before you install.**
 They run around every tool call in every session: one reads the queue when a
-session opens, one warns on the first edit if no timer is running, one speaks
-up at the end if a timer was left running. They only ever print, and the one
-that could interrupt an edit deliberately does not — see *What the hooks do*.
+session opens, one warns once per session on an edit made while no timer runs,
+one speaks up at the end if a timer was left running. They only ever print, and
+the one that could interrupt an edit deliberately does not — see *What the
+hooks do*.
 
 <details>
 <summary>By hand, without the plugin</summary>
