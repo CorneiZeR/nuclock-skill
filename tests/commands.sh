@@ -84,6 +84,13 @@ out=$(python3 skills/nuclock/scripts/nu-start.py NUC-1 || true)
 check 'refuses to replace a running timer' '0' "$(writes)"
 check 'and names what is open' 'yes' "$(says "$out" 'NUC-2')"
 
+# A key is one query value. Pasted with a stray `&`, it used to split into a
+# second parameter, and the task named before the `&` was started.
+scenario "{\"timer\":null,\"tasks\":[$TASK],\"links\":[]}"
+err=$(python3 skills/nuclock/scripts/nu-start.py 'NUC-1&x=1' 2>&1 >/dev/null || true)
+check 'a key with `&` in it starts nothing' '0' "$(writes)"
+check 'and is looked up whole' 'yes' "$(says "$err" 'no task NUC-1&x=1')"
+
 echo
 echo 'nu-finish'
 

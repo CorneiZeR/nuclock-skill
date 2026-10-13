@@ -29,6 +29,7 @@ import json
 import os
 import pathlib
 import urllib.error
+import urllib.parse
 import urllib.request
 
 API = os.environ.get('NUCLOCK_API_URL', 'https://api.clock.nuspect.net')
@@ -143,7 +144,8 @@ def running_timer() -> dict | None:
 
 def my_tasks(status: str, limit: int = 20) -> list[dict]:
     """This person's tasks in one status, in the order somebody arranged."""
-    return rows(get(f'/v1/project/tasks?mine=true&status={status}&sort=rank&limit={limit}'))
+    query = urllib.parse.urlencode({'mine': 'true', 'status': status, 'sort': 'rank', 'limit': limit})
+    return rows(get(f'/v1/project/tasks?{query}'))
 
 
 def task_by_key(key: str) -> dict:
@@ -154,7 +156,8 @@ def task_by_key(key: str) -> dict:
     else's task give the same empty answer, which is the same thing from the
     outside and deliberately so.
     """
-    found = rows(get(f'/v1/project/tasks?key={key}&with_cancelled=true&limit=1'))
+    query = urllib.parse.urlencode({'key': key, 'with_cancelled': 'true', 'limit': 1})
+    found = rows(get(f'/v1/project/tasks?{query}'))
     if not found:
         raise ApiError(f'no task {key} that this key can see')
     return found[0]
