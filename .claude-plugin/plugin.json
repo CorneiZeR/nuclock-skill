@@ -1,6 +1,6 @@
 {
   "name": "nuclock",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Working in the nuclock tracker: planning a backlog into a queue, seeing what is next and what is blocked, taking one task from start to done, and keeping the timer honest — start it when work starts, stop it when it stops, backfill what ran untracked. Ships hooks that warn (never block, never write time) and two commands that do the whole cycle.",
   "author": {
     "name": "Oleksii Kolosiuk"
