@@ -62,6 +62,18 @@ def asked_recently(path: Path) -> bool:
         return False
 
 
+def claim_is_stale(path: Path) -> bool:
+    """Whether another asker's claim is old enough to take over.
+
+    A claim gone by now was released by a holder that has just asked, which
+    is the opposite of stale.
+    """
+    try:
+        return (time.time() - path.stat().st_mtime) >= CLAIM_SECONDS
+    except OSError:
+        return False
+
+
 def main() -> int:
     try:
         event = json.loads(sys.stdin.read() or '{}')
@@ -83,7 +95,7 @@ def main() -> int:
     try:
         os.close(os.open(claim, os.O_CREAT | os.O_EXCL | os.O_WRONLY))
     except FileExistsError:
-        if (time.time() - claim.stat().st_mtime) < CLAIM_SECONDS:
+        if not claim_is_stale(claim):
             return 0
         # Stale: whoever held it was killed mid-call. Take it over rather than
         # leave the session unwarned for ever.

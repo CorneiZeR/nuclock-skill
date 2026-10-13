@@ -71,6 +71,23 @@ both=$(
 )
 check 'two hooks at once warn once between them' '1' "$both"
 
+# The holder releases its claim between this hook's `O_EXCL` refusal and its
+# look at the claim's age. That used to be a `FileNotFoundError` traceback.
+status=0
+python3 - "$RUN" > /dev/null 2>&1 <<'PY' || status=$?
+import importlib.util, io, sys
+spec = importlib.util.spec_from_file_location('hook', 'hooks/editing-without-a-timer.py')
+hook = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(hook)
+hook.tempfile.gettempdir()  # it probes with `os.open`, so before that is replaced
+def refused(path, flags, *rest):
+    raise FileExistsError(path)
+hook.os.open = refused
+sys.stdin = io.StringIO('{"session_id":"gone-%s"}' % sys.argv[1])
+raise SystemExit(hook.main())
+PY
+check 'a claim released mid-check is not a crash' '0' "$status"
+
 echo 'session end'
 
 stub 0 'NUC-1 — something (since now)'
