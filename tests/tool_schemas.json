@@ -4020,6 +4020,12 @@
     "title": "open_work_totalsArguments",
     "type": "object"
   },
+  "organisation_plan": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "organisation_planArguments",
+    "type": "object"
+  },
   "read_all_notifications": {
     "additionalProperties": false,
     "properties": {},
