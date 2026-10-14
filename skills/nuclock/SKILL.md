@@ -214,6 +214,13 @@ The key is the person's own, and it carries their access:
   not an obstacle: finish or park what was already open.
 * **An invoice freezes what it billed.** No new time on a claimed task — the
   refusal is the invoice protecting a number somebody has already been sent.
+* **`plan_limit` (403) is the organisation's plan, not a fault.** A plan
+  refuses the next person, live project, upload or integration once its limit
+  is spent, and touches nothing that exists. Say which limit, and that a larger
+  plan lifts it; `organisation_plan` shows what is used (administrators only).
+* **`plan_call_limit` (429) is today's API and MCP calls, spent.** It resets at
+  midnight UTC. Stop calling — a retry spends nothing and changes nothing — and
+  tell the person; the app itself keeps working.
 
 ## The useful side effect
 
