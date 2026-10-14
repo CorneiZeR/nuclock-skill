@@ -102,8 +102,9 @@ told_in() {
   [ "$1" = unset ] || runtime=("XDG_RUNTIME_DIR=${2:-$WORK/$1}")
   # `os.getuid` is moved one up, so the directory's owner is somebody else.
   [ "${3:-}" = stranger ] && as=(-c 'import os, runpy; uid = os.getuid(); os.getuid = lambda: uid + 1; runpy.run_path("hooks/editing-without-a-timer.py", run_name="__main__")')
+  # bash < 4.4 calls a bare empty "${runtime[@]}" unbound under `set -u`.
   echo '{"session_id":"'"$session"'","tool_name":"Edit"}' |
-    env -u XDG_RUNTIME_DIR "${runtime[@]}" python3 "${as[@]:-hooks/editing-without-a-timer.py}" > /dev/null
+    env -u XDG_RUNTIME_DIR ${runtime[@]+"${runtime[@]}"} python3 "${as[@]:-hooks/editing-without-a-timer.py}" > /dev/null
   for dir in "$WORK/$1" "$TMPDIR"; do
     [ -e "$dir/nuclock-told-$session" ] && echo "$dir" && return
   done
