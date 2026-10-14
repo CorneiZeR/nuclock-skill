@@ -84,6 +84,32 @@ out=$(python3 skills/nuclock/scripts/nu-start.py NUC-1 || true)
 check 'refuses to replace a running timer' '0' "$(writes)"
 check 'and names what is open' 'yes' "$(says "$out" 'NUC-2')"
 
+# A key is one query value. Pasted with a stray `&`, it used to split into a
+# second parameter, and the task named before the `&` was started.
+scenario "{\"timer\":null,\"tasks\":[$TASK],\"links\":[]}"
+err=$(python3 skills/nuclock/scripts/nu-start.py 'NUC-1&x=1' 2>&1 >/dev/null || true)
+check 'a key with `&` in it starts nothing' '0' "$(writes)"
+check 'and is looked up whole' 'yes' "$(says "$err" 'no task NUC-1&x=1')"
+
+scenario "{\"timer\":null,\"tasks\":[$TASK],\"links\":[]}"
+err=$(python3 skills/nuclock/scripts/nu-start.py '' 2>&1 >/dev/null || true)
+check 'an empty key starts nothing' '0' "$(writes)"
+check 'and says no key was given' 'yes' "$(says "$err" 'no task key given')"
+
+scenario "{\"timer\":null,\"tasks\":[$TASK],\"links\":[]}"
+python3 skills/nuclock/scripts/nu-start.py nuc-1 >/dev/null 2>&1 || true
+check 'a key typed in lower case finds its task' '2' "$(writes)"
+
+scenario "{\"timer\":null,\"tasks\":[$TASK],\"links\":[],\"ignores_key\":true}"
+err=$(python3 skills/nuclock/scripts/nu-start.py NUC-7 2>&1 >/dev/null || true)
+check 'a filter the server dropped starts nothing' '0' "$(writes)"
+check 'and names the key asked for' 'yes' "$(says "$err" 'no task NUC-7')"
+
+scenario '{"timer":null,"tasks":[{"id":"t9","key":null,"status":"todo"}],"links":[],"ignores_key":true}'
+err=$(python3 skills/nuclock/scripts/nu-start.py NUC-7 2>&1 >/dev/null || true)
+check 'a row with no key starts nothing' '0' "$(writes)"
+check 'and is no task, not a crash' 'yes' "$(says "$err" 'no task NUC-7')"
+
 echo
 echo 'nu-finish'
 

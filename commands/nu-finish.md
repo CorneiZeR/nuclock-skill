@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(python3:*)
+allowed-tools: Bash(python3 "${CLAUDE_PLUGIN_ROOT}/skills/nuclock/scripts/nu-finish.py":*)
 argument-hint: NUC-142 [--done] [--anyway]
 description: Stop the timer, and close the task only when it is really closed
 ---

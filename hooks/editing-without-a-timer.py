@@ -26,6 +26,7 @@ blinked is worse than silence: it teaches people to ignore the hook.
 from __future__ import annotations
 
 import contextlib
+import functools
 import json
 import os
 import subprocess
@@ -51,13 +52,48 @@ CLAIM_SECONDS = 20
 
 
 def marker(kind: str, session: str) -> Path:
-    return Path(tempfile.gettempdir()) / f'nuclock-{kind}-{session or "unknown"}'
+    return marker_directory() / f'nuclock-{kind}-{session or "unknown"}'
+
+
+@functools.cache
+def marker_directory() -> Path:
+    # On Linux the temporary directory is `/tmp`, shared by every user, where
+    # anybody can create `nuclock-told-<session>` first and silence the warning.
+    # `XDG_RUNTIME_DIR` is this user's own, mode 0700, but only an environment
+    # says so, and a stale or borrowed one is checked before it is trusted:
+    # https://specifications.freedesktop.org/basedir/0.8/#variables
+    # A relative one is invalid and ignored, as the spec's basics say:
+    # https://specifications.freedesktop.org/basedir/0.8/#basics
+    runtime = Path(os.environ.get('XDG_RUNTIME_DIR') or '.')
+    return runtime if runtime.is_absolute() and is_private(runtime) else Path(tempfile.gettempdir())
+
+
+def is_private(directory: Path) -> bool:
+    """Whether the directory is this user's, writable, and closed to everybody else."""
+    try:
+        info = directory.stat()
+    except OSError:
+        return False
+    owned = info.st_uid == os.getuid() and not info.st_mode & 0o077
+    return directory.is_dir() and owned and os.access(directory, os.W_OK)
 
 
 def asked_recently(path: Path) -> bool:
     """Whether the tracker was asked lately and said a timer was running."""
     try:
         return (time.time() - path.stat().st_mtime) < CACHE_SECONDS
+    except OSError:
+        return False
+
+
+def claim_is_stale(path: Path) -> bool:
+    """Whether another asker's claim is old enough to take over.
+
+    A claim gone by now was released by a holder that has just asked, which
+    is the opposite of stale.
+    """
+    try:
+        return (time.time() - path.stat().st_mtime) >= CLAIM_SECONDS
     except OSError:
         return False
 
@@ -83,7 +119,7 @@ def main() -> int:
     try:
         os.close(os.open(claim, os.O_CREAT | os.O_EXCL | os.O_WRONLY))
     except FileExistsError:
-        if (time.time() - claim.stat().st_mtime) < CLAIM_SECONDS:
+        if not claim_is_stale(claim):
             return 0
         # Stale: whoever held it was killed mid-call. Take it over rather than
         # leave the session unwarned for ever.

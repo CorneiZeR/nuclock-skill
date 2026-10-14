@@ -28,13 +28,14 @@ the work does.
 time nobody can vouch for. The hooks warn, offer, and stop there — the person
 decides.
 
-## The four moments
+## The five moments
 
 | When | Do this |
 | --- | --- |
 | A plan is agreed | Create the task(s), in queue order. Never keep a plan only in a chat. |
 | Starting on one | `set_task_status` → `in_progress`, then `start_timer` |
-| It is merged and verified | `set_task_status` → `done`, then `stop_timer` |
+| Work stops: a break, a hand-off, waiting on review | `stop_timer`, status left alone |
+| It is merged and verified | `set_task_status` → `done` |
 | Priorities change | `move_task` — the tracker is the queue, so reordering happens there |
 
 ## Reading the queue
@@ -145,8 +146,10 @@ If the work is interrupted: stop the timer and leave the status alone.
 
 ## Finishing
 
-`done` and `stop_timer` belong at the END of the whole change — after the
-merge request is merged and its pipeline is green, not when the code compiles.
+`done` belongs at the END of the whole change — after the merge request is
+merged and its pipeline is green, not when the code compiles. The timer does
+not wait for it: it stops when the work does, so a merge request sitting in
+review is not billed as hours somebody worked.
 `done` makes a task billable, so calling it done early bills work nobody has
 accepted yet.
 
@@ -191,7 +194,7 @@ None of them writes anything to the tracker:
 | Hook | When | What it says |
 | --- | --- | --- |
 | `session-start` | a session opens | what is in flight and whether a timer is running |
-| `editing-without-a-timer` | first edit in a repository | "you are changing code with no timer running" — once per session, never blocks |
+| `editing-without-a-timer` | an edit while no timer runs | "you are changing code with no timer running" — once per session, never blocks |
 | `session-end` | the session ends | "a timer is still running on NUC-123" |
 
 They are warnings on purpose. A hook that started a timer would be writing time

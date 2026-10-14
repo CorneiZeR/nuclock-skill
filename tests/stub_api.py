@@ -16,8 +16,10 @@ import json
 import pathlib
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import parse_qs, urlsplit
 
 SCENARIO: dict = {}
+TASK_PARAMETERS = {'key', 'with_cancelled', 'limit', 'mine', 'status', 'sort'}
 WRITES: pathlib.Path
 
 
@@ -38,7 +40,22 @@ class Handler(BaseHTTPRequestHandler):
         if path == '/v1/project/timer':
             self._answer(SCENARIO.get('timer'))
         elif path == '/v1/project/tasks':
-            self._answer({'items': SCENARIO.get('tasks', [])})
+            # A parameter no script sends is refused, so a value that leaked
+            # into a second one fails here instead of finding a task.
+            params = parse_qs(urlsplit(self.path).query, keep_blank_values=True)
+            unknown = sorted(set(params) - TASK_PARAMETERS)
+            if unknown:
+                self._answer({'message': f'unknown parameter {unknown[0]}'}, 400)
+                return
+            # Case-insensitive, as the `list_tasks` tool describes `key` in
+            # `tool_schemas.json`; the REST filter is assumed to match the
+            # same way, and whole. An empty key is a key.
+            tasks = SCENARIO.get('tasks', [])
+            # `ignores_key` stands in for a server that drops the filter.
+            if 'key' in params and not SCENARIO.get('ignores_key'):
+                wanted = params['key'][0].casefold()
+                tasks = [task for task in tasks if task['key'].casefold() == wanted]
+            self._answer({'items': tasks})
         elif path.endswith('/links'):
             self._answer(SCENARIO.get('links', []))
         elif path.endswith('/merge-requests'):

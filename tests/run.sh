@@ -15,6 +15,9 @@ cd "$(dirname "$0")/.."
 WORK=$(mktemp -d)
 RUN=${WORK##*/}  # from the random scratch directory: a PID is reused, this is not
 trap 'rm -rf "$WORK"' EXIT
+# The hooks keep session markers in one of these; a run must not leave them in the real ones.
+export XDG_RUNTIME_DIR="$WORK" TMPDIR="$WORK/tmp"
+mkdir -m 700 "$TMPDIR"
 
 failures=0
 check() {
@@ -71,6 +74,59 @@ both=$(
 )
 check 'two hooks at once warn once between them' '1' "$both"
 
+# The holder releases its claim between this hook's `O_EXCL` refusal and its
+# look at the claim's age. That used to be a `FileNotFoundError` traceback.
+status=0
+python3 - "$RUN" > /dev/null 2>&1 <<'PY' || status=$?
+import importlib.util, io, sys
+spec = importlib.util.spec_from_file_location('hook', 'hooks/editing-without-a-timer.py')
+hook = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(hook)
+hook.tempfile.gettempdir()  # it probes with `os.open`, so before that is replaced
+def refused(path, flags, *rest):
+    raise FileExistsError(path)
+hook.os.open = refused
+sys.stdin = io.StringIO('{"session_id":"gone-%s"}' % sys.argv[1])
+raise SystemExit(hook.main())
+PY
+check 'a claim released mid-check is not a crash' '0' "$status"
+
+echo 'where the markers live'
+
+# $1 — a directory under the scratch one, or `unset` to remove the variable;
+# $2 — what `XDG_RUNTIME_DIR` is set to, the directory's full path by default;
+# $3 — `stranger` to run the hook as if another user owned the directory.
+# Prints the directory the session's marker landed in.
+told_in() {
+  local session="where-$1-${3:-self}-$RUN" runtime=() as=()
+  [ "$1" = unset ] || runtime=("XDG_RUNTIME_DIR=${2:-$WORK/$1}")
+  # `os.getuid` is moved one up, so the directory's owner is somebody else.
+  [ "${3:-}" = stranger ] && as=(-c 'import os, runpy; uid = os.getuid(); os.getuid = lambda: uid + 1; runpy.run_path("hooks/editing-without-a-timer.py", run_name="__main__")')
+  echo '{"session_id":"'"$session"'","tool_name":"Edit"}' |
+    env -u XDG_RUNTIME_DIR "${runtime[@]}" python3 "${as[@]:-hooks/editing-without-a-timer.py}" > /dev/null
+  for dir in "$WORK/$1" "$TMPDIR"; do
+    [ -e "$dir/nuclock-told-$session" ] && echo "$dir" && return
+  done
+  echo nowhere
+}
+
+stub 1 'no timer is running'
+mkdir -m 700 "$WORK/private" "$WORK/relative" "$WORK/read-only"
+chmod 500 "$WORK/read-only"
+mkdir -m 777 "$WORK/shared"
+install -m 600 /dev/null "$WORK/file"
+check 'a private runtime directory holds them' "$WORK/private" "$(told_in private)"
+check 'one other users can write to is not trusted' "$TMPDIR" "$(told_in shared)"
+check 'one that does not exist is not used' "$TMPDIR" "$(told_in missing)"
+# Root writes through any mode, so there the directory is writable after all.
+if [ "$(id -u)" != 0 ]; then
+  check 'one this user cannot write to is not used' "$TMPDIR" "$(told_in read-only)"
+fi
+check 'a file is not a directory' "$TMPDIR" "$(told_in file)"
+check 'one another user owns is not used' "$TMPDIR" "$(told_in private '' stranger)"
+check 'a relative one is not used, as the spec says' "$TMPDIR" "$(told_in relative "$(python3 -c 'import os, sys; print(os.path.relpath(sys.argv[1]))' "$WORK/relative")")"
+check 'without one, the temporary directory' "$TMPDIR" "$(told_in unset)"
+
 echo 'session end'
 
 stub 0 'NUC-1 — something (since now)'
@@ -84,6 +140,16 @@ check 'quiet when nothing is running' '' "$out"
 stub 2 'unreachable'
 out=$(echo '{"session_id":"f"}' | python3 hooks/session-end.py)
 check 'quiet when the tracker cannot be asked' '' "$out"
+
+echo 'the scripts behind them'
+
+# Every other check points the hooks at a stub, so a default path naming no
+# file passed them all: `session-start.py` ran a missing `nu-queue.py`, got
+# exit 2 back, and said nothing in every session.
+for pair in session-start.py:QUEUE editing-without-a-timer.py:RUNNING session-end.py:RUNNING; do
+  found=$(env -u NUCLOCK_QUEUE -u NUCLOCK_RUNNING python3 -c 'import runpy, sys; print(runpy.run_path(sys.argv[1])[sys.argv[2]].is_file())' "hooks/${pair%%:*}" "${pair##*:}")
+  check "${pair%%:*} finds its script" 'True' "$found"
+done
 
 echo
 if [ "$failures" -eq 0 ]; then

@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(python3:*)
+allowed-tools: Bash(python3 "${CLAUDE_PLUGIN_ROOT}/skills/nuclock/scripts/nu-start.py":*)
 argument-hint: NUC-142 [--anyway]
 description: Start a task properly — check blockers, move the status, start the timer
 ---
