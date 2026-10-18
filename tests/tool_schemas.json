@@ -2168,6 +2168,21 @@
     "title": "delete_time_entryArguments",
     "type": "object"
   },
+  "delete_tracker_import": {
+    "additionalProperties": false,
+    "properties": {
+      "import_id": {
+        "description": "Import id",
+        "title": "Import Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "import_id"
+    ],
+    "title": "delete_tracker_importArguments",
+    "type": "object"
+  },
   "detach_merge_request": {
     "additionalProperties": false,
     "properties": {
@@ -2449,6 +2464,21 @@
       "entry_id"
     ],
     "title": "get_time_entryArguments",
+    "type": "object"
+  },
+  "get_tracker_import": {
+    "additionalProperties": false,
+    "properties": {
+      "import_id": {
+        "description": "Import id",
+        "title": "Import Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "import_id"
+    ],
+    "title": "get_tracker_importArguments",
     "type": "object"
   },
   "get_user": {
@@ -3751,6 +3781,12 @@
     "title": "list_time_entriesArguments",
     "type": "object"
   },
+  "list_tracker_imports": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "list_tracker_importsArguments",
+    "type": "object"
+  },
   "list_unsettled_lines": {
     "additionalProperties": false,
     "properties": {
@@ -4081,6 +4117,47 @@
       }
     },
     "title": "report_boundsArguments",
+    "type": "object"
+  },
+  "run_tracker_import": {
+    "additionalProperties": false,
+    "properties": {
+      "billed_elsewhere": {
+        "default": true,
+        "description": "Whether the old tracker already invoiced this work. True (the default) keeps every invoice here from billing it again; false makes it billable by the next invoice",
+        "title": "Billed Elsewhere",
+        "type": "boolean"
+      },
+      "import_id": {
+        "description": "Import id",
+        "title": "Import Id",
+        "type": "string"
+      },
+      "people": {
+        "description": "One `{key, user_id}` per person of the preview. `user_id` null, or the person left out, leaves their rows out — counted in the report",
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "title": "People",
+        "type": "array"
+      },
+      "projects": {
+        "description": "One per project of the preview: `{key, project_id}` for an existing live project, `{key, new_title, currency, default_outer_price}` to make one (currency USD, EUR or UAH; the price is what an hour sells for, needed unless the file names a USD rate for everybody there), or `{key}` alone to leave it out",
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "title": "Projects",
+        "type": "array"
+      }
+    },
+    "required": [
+      "import_id",
+      "people",
+      "projects"
+    ],
+    "title": "run_tracker_importArguments",
     "type": "object"
   },
   "send_invoice": {
