@@ -214,6 +214,12 @@ The key is the person's own, and it carries their access:
   not an obstacle: finish or park what was already open.
 * **An invoice freezes what it billed.** No new time on a claimed task — the
   refusal is the invoice protecting a number somebody has already been sent.
+* **History its old tracker billed is frozen the same way.** A task brought in
+  from a Clockify, Toggl or Harvest export as already billed
+  (`billed_elsewhere`) takes no timer, no new time, no edits and no cancel:
+  it is paid history. A span read from a file that was NOT billed there
+  (source `imported`) is corrected like any other — and one deleted stays out
+  of every later import of a file that holds it.
 * **`plan_limit` (403) is the organisation's plan, not a fault.** A plan
   refuses the next person, live project, upload or integration once its limit
   is spent, and touches nothing that exists. Say which limit, and that a larger
