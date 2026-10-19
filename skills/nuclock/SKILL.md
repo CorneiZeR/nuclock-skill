@@ -136,6 +136,14 @@ people actually open it with.
 
 Then start the timer. Then write code.
 
+**Read what is attached before working from a description of it.** A task's
+files — a screenshot of the design, a spec, a log — are listed by
+`list_attachments` and read by `read_attachment(attachment_id)`: an image
+arrives as an image, text as text, a PDF as a document. The download link is
+for a person; it wants a credential the assistant does not hold. A type no
+model reads, or a file past the size the tool hands over, is refused with both
+named — say so rather than guessing at what the file shows.
+
 **Write down what you FOUND, not only what you fixed.** A comment on the task
 is where a finding belongs — a defect noticed in passing, a decision taken, a
 thing that turned out to be untrue. A chat scrolls away; the task is still
