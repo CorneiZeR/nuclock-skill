@@ -293,6 +293,57 @@
     "title": "attach_expense_receipt_linkArguments",
     "type": "object"
   },
+  "attach_file": {
+    "additionalProperties": false,
+    "properties": {
+      "content": {
+        "description": "The file: text as it is, or binary as base64 (see `encoding`)",
+        "title": "Content",
+        "type": "string"
+      },
+      "content_type": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "MIME type; guessed from the name when omitted",
+        "title": "Content Type"
+      },
+      "encoding": {
+        "default": "text",
+        "description": "\"text\" stores `content` as UTF-8; \"base64\" decodes it first",
+        "enum": [
+          "text",
+          "base64"
+        ],
+        "title": "Encoding",
+        "type": "string"
+      },
+      "name": {
+        "description": "File name, with its extension: \"build.log\", \"shot.png\"",
+        "minLength": 1,
+        "title": "Name",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "Task id",
+        "title": "Task Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_id",
+      "name",
+      "content"
+    ],
+    "title": "attach_fileArguments",
+    "type": "object"
+  },
   "attach_merge_request": {
     "additionalProperties": false,
     "properties": {

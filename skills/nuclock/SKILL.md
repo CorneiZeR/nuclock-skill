@@ -144,6 +144,14 @@ for a person; it wants a credential the assistant does not hold. A type no
 model reads, or a file past the size the tool hands over, is refused with both
 named — say so rather than guessing at what the file shows.
 
+**Attach what belongs with the task, not only paste it into a comment.** A log
+you collected, a note you wrote, a screenshot somebody handed you goes on the
+task by `attach_file(task_id, name, content)` — text as it is, or binary as
+base64 with `encoding="base64"`; the type is guessed from the name unless given.
+It is uploaded as the person whose key you hold, so the same rules apply: staff
+only, the organisation's storage allowance, and up to 5 MiB through the tool.
+Past that the refusal names both sizes, and the file is for the person to upload.
+
 **Write down what you FOUND, not only what you fixed.** A comment on the task
 is where a finding belongs — a defect noticed in passing, a decision taken, a
 thing that turned out to be untrue. A chat scrolls away; the task is still
