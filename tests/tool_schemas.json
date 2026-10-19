@@ -1216,6 +1216,19 @@
         "description": "Only for an ADVANCE — money sent before the work was invoiced. With lines the amount comes from them and this is refused",
         "title": "Amount"
       },
+      "expected_amount": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "With lines: the total `outstanding` you read from `list_unsettled_lines` for them. Refused (409) if it changed meanwhile — an advance or an invoice can claim part of a line in between, and the payment would record less than left",
+        "title": "Expected Amount"
+      },
       "line_ids": {
         "anyOf": [
           {
