@@ -1050,14 +1050,14 @@
         "type": "string"
       },
       "base_url": {
-        "description": "The tracker's own base URL",
+        "description": "The tracker's own base URL; `https://linear.app` for Linear",
         "maxLength": 2083,
         "minLength": 1,
         "title": "Base Url",
         "type": "string"
       },
       "external_project_id": {
-        "description": "The target on the tracker side: an OpenProject project id, or a GitLab repository (`group/repo`, or its numeric id)",
+        "description": "The target on the tracker side: an OpenProject project id, a GitLab repository (`group/repo`, or its numeric id), or a Linear team (its key, `ENG`, or its id)",
         "title": "External Project Id",
         "type": "string"
       },
@@ -1072,7 +1072,8 @@
         "description": "Tracker type",
         "enum": [
           "openproject",
-          "gitlab"
+          "gitlab",
+          "linear"
         ],
         "title": "Kind",
         "type": "string"
@@ -6355,7 +6356,7 @@
           }
         ],
         "default": null,
-        "description": "The tracker's base URL",
+        "description": "The tracker's base URL; a Linear connection's is written by its sync",
         "title": "Base Url"
       },
       "external_project_id": {
@@ -6368,7 +6369,7 @@
           }
         ],
         "default": null,
-        "description": "The target on the tracker side: an OpenProject project id, or a GitLab repository",
+        "description": "The target on the tracker side: an OpenProject project id, a GitLab repository, or a Linear team. Another target, or a new api_token, un-pins a Linear connection; its next sync pins it again",
         "title": "External Project Id"
       },
       "integration_id": {
