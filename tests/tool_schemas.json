@@ -4488,6 +4488,175 @@
     "title": "open_work_filter_countsArguments",
     "type": "object"
   },
+  "open_work_graph": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "const": "all",
+            "type": "string"
+          }
+        ],
+        "default": "unpaid",
+        "description": "Stage to keep. Default \"unpaid\" = still owed for; \"all\" = history",
+        "title": "Billing"
+      },
+      "cursor": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Which page: the `next_cursor` of the page before; omit for the first",
+        "title": "Cursor"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "limit": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How many linked tasks to describe at most (1-300, default 300)",
+        "title": "Limit"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency — one of the four levels",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "with_cancelled": {
+        "default": false,
+        "description": "Keep cancelled work in the answer as well",
+        "title": "With Cancelled",
+        "type": "boolean"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "title": "open_work_graphArguments",
+    "type": "object"
+  },
   "open_work_totals": {
     "additionalProperties": false,
     "properties": {
