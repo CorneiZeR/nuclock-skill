@@ -576,6 +576,71 @@
   "count_open_work": {
     "additionalProperties": false,
     "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Progress towards payment",
+        "title": "Billing"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency — one of the four levels",
+        "title": "Priority"
+      },
       "project_id": {
         "anyOf": [
           {
@@ -588,6 +653,57 @@
         "default": null,
         "description": "Restrict to one project",
         "title": "Project Id"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
       }
     },
     "title": "count_open_workArguments",
@@ -1043,6 +1159,12 @@
   "create_integration": {
     "additionalProperties": false,
     "properties": {
+      "account": {
+        "default": "",
+        "description": "Jira only: the e-mail of the account the API token belongs to",
+        "title": "Account",
+        "type": "string"
+      },
       "api_token": {
         "default": "",
         "description": "Read-only token for that tracker. Required to IMPORT; a webhook-only GitLab connection needs none",
@@ -1050,14 +1172,14 @@
         "type": "string"
       },
       "base_url": {
-        "description": "The tracker's own base URL; `https://linear.app` for Linear",
+        "description": "The tracker's own base URL; `https://linear.app` for Linear, `https://github.com` for GitHub, the site (`https://acme.atlassian.net`) for Jira",
         "maxLength": 2083,
         "minLength": 1,
         "title": "Base Url",
         "type": "string"
       },
       "external_project_id": {
-        "description": "The target on the tracker side: an OpenProject project id, a GitLab repository (`group/repo`, or its numeric id), or a Linear team (its key, `ENG`, or its id)",
+        "description": "The target on the tracker side: an OpenProject project id, a GitLab repository (`group/repo`, or its numeric id), a Linear team (its key, `ENG`, or its id), a GitHub repository (`owner/repo`), or a Jira project (its key, `ENG`, or its id)",
         "title": "External Project Id",
         "type": "string"
       },
@@ -1073,7 +1195,9 @@
         "enum": [
           "openproject",
           "gitlab",
-          "linear"
+          "linear",
+          "github",
+          "jira"
         ],
         "title": "Kind",
         "type": "string"
@@ -1083,9 +1207,15 @@
         "title": "Project Id",
         "type": "string"
       },
+      "push_worklogs": {
+        "default": false,
+        "description": "Jira only: send the hours tracked here back as worklogs, from now on",
+        "title": "Push Worklogs",
+        "type": "boolean"
+      },
       "webhook_secret": {
         "default": "",
-        "description": "The secret GitLab signs its deliveries with — how we know a delivery is that repository",
+        "description": "The secret GitLab or GitHub signs its deliveries with — how we know a delivery is that repository. Optional for Jira: its site webhook signs with it, or carries it as `?token=` in the address",
         "title": "Webhook Secret",
         "type": "string"
       }
@@ -1510,6 +1640,21 @@
         "description": "Project id",
         "title": "Project Id",
         "type": "string"
+      },
+      "tax_rate": {
+        "anyOf": [
+          {
+            "exclusiveMaximum": 100,
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The tax we pay on top of their pay, as the % they pay of what is sent (grossed up, so they keep their pay); out of the curator margin",
+        "title": "Tax Rate"
       },
       "user_id": {
         "description": "The person, from list_users",
@@ -3157,6 +3302,19 @@
   "list_open_work": {
     "additionalProperties": false,
     "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
       "billing": {
         "anyOf": [
           {
@@ -3178,6 +3336,19 @@
         "description": "Stage to keep. Default \"unpaid\" = still owed for; \"all\" = history",
         "title": "Billing"
       },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
       "limit": {
         "default": 25,
         "description": "Rows per page",
@@ -3193,6 +3364,25 @@
         "title": "Page",
         "type": "integer"
       },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency — one of the four levels",
+        "title": "Priority"
+      },
       "project_id": {
         "anyOf": [
           {
@@ -3205,6 +3395,73 @@
         "default": null,
         "description": "Restrict to one project",
         "title": "Project Id"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "sort": {
+        "default": "activity",
+        "description": "activity = newest work first; priority = most urgent first",
+        "enum": [
+          "activity",
+          "priority"
+        ],
+        "title": "Sort",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "with_cancelled": {
+        "default": false,
+        "description": "Keep cancelled work in the answer as well",
+        "title": "With Cancelled",
+        "type": "boolean"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
       }
     },
     "title": "list_open_workArguments",
@@ -3855,6 +4112,19 @@
   "list_unsettled_lines": {
     "additionalProperties": false,
     "properties": {
+      "on": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The day the transfer left (YYYY-MM-DD); rates for unpaid invoices are read on it. Omit for today",
+        "title": "On"
+      },
       "project_id": {
         "anyOf": [
           {
@@ -4081,9 +4351,159 @@
     "title": "notification_preferencesArguments",
     "type": "object"
   },
+  "open_work_filter_counts": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "const": "all",
+            "type": "string"
+          }
+        ],
+        "default": "unpaid",
+        "description": "Stage the other axes are counted under. Default \"unpaid\"",
+        "title": "Billing"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency — one of the four levels",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "title": "open_work_filter_countsArguments",
+    "type": "object"
+  },
   "open_work_totals": {
     "additionalProperties": false,
     "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
       "billing": {
         "anyOf": [
           {
@@ -4105,6 +4525,38 @@
         "description": "Stage to total. Default \"unpaid\" = still owed for, the same set list_open_work returns; \"uninvoiced\" = what is accruing",
         "title": "Billing"
       },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency — one of the four levels",
+        "title": "Priority"
+      },
       "project_id": {
         "anyOf": [
           {
@@ -4117,9 +4569,219 @@
         "default": null,
         "description": "Restrict to one project",
         "title": "Project Id"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "with_cancelled": {
+        "default": false,
+        "description": "Keep cancelled work in the answer as well",
+        "title": "With Cancelled",
+        "type": "boolean"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
       }
     },
     "title": "open_work_totalsArguments",
+    "type": "object"
+  },
+  "open_work_totals_breakdown": {
+    "additionalProperties": false,
+    "properties": {
+      "area_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work needing this craft — from `list_areas`",
+        "title": "Area Id"
+      },
+      "billing": {
+        "anyOf": [
+          {
+            "enum": [
+              "uninvoiced",
+              "awaiting",
+              "paid",
+              "invoiced",
+              "unpaid"
+            ],
+            "type": "string"
+          },
+          {
+            "const": "all",
+            "type": "string"
+          }
+        ],
+        "default": "unpaid",
+        "description": "Stage to split. Default \"unpaid\", as open_work_totals",
+        "title": "Billing"
+      },
+      "by": {
+        "default": "project",
+        "description": "project, or epic (a row with no id is the work in no epic)",
+        "enum": [
+          "project",
+          "epic"
+        ],
+        "title": "By",
+        "type": "string"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only work in this epic — from `list_epics`; `none` is the work in no epic at all",
+        "title": "Epic Id"
+      },
+      "priority": {
+        "anyOf": [
+          {
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "urgent"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Urgency — one of the four levels",
+        "title": "Priority"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "search": {
+        "default": "",
+        "description": "Words that must appear in the title, description or key",
+        "title": "Search",
+        "type": "string"
+      },
+      "status": {
+        "anyOf": [
+          {
+            "enum": [
+              "todo",
+              "in_progress",
+              "done",
+              "cancelled"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Lifecycle state",
+        "title": "Status"
+      },
+      "with_cancelled": {
+        "default": false,
+        "description": "Keep cancelled work in the answer as well",
+        "title": "With Cancelled",
+        "type": "boolean"
+      },
+      "worked_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on from this day, YYYY-MM-DD",
+        "title": "Worked From"
+      },
+      "worked_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only tasks worked on up to this day, YYYY-MM-DD",
+        "title": "Worked To"
+      }
+    },
+    "title": "open_work_totals_breakdownArguments",
     "type": "object"
   },
   "organisation_plan": {
@@ -6338,6 +7000,19 @@
   "update_integration": {
     "additionalProperties": false,
     "properties": {
+      "account": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Jira only: the token's account e-mail; omit to leave as is",
+        "title": "Account"
+      },
       "api_token": {
         "default": "",
         "description": "New token. Empty keeps the stored one.",
@@ -6369,7 +7044,7 @@
           }
         ],
         "default": null,
-        "description": "The target on the tracker side: an OpenProject project id, a GitLab repository, or a Linear team. Another target, or a new api_token, un-pins a Linear connection; its next sync pins it again",
+        "description": "The target on the tracker side: an OpenProject project id, a GitLab repository, a Linear team, a GitHub repository or a Jira project. Another target or site, or a new api_token, un-pins a Linear, GitHub or Jira connection; its next sync pins it again",
         "title": "External Project Id"
       },
       "integration_id": {
@@ -6389,6 +7064,19 @@
         "default": null,
         "description": "Whether scheduled syncs run; omit to leave as is",
         "title": "Is Active"
+      },
+      "push_worklogs": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Jira only: send hours back as worklogs. Switched on, it sends from NOW; omit to leave as is",
+        "title": "Push Worklogs"
       },
       "webhook_secret": {
         "default": "",
@@ -6617,6 +7305,21 @@
         "default": null,
         "description": "Their role on this project",
         "title": "Position"
+      },
+      "tax_rate": {
+        "anyOf": [
+          {
+            "exclusiveMaximum": 100,
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The tax we pay on top of their pay, as the % they pay of what is sent (grossed up, so they keep their pay); out of the curator margin",
+        "title": "Tax Rate"
       },
       "work_format": {
         "anyOf": [
