@@ -3,7 +3,7 @@
     "additionalProperties": false,
     "properties": {
       "amount": {
-        "description": "What it COST us on that project. What the project is billed follows from its share, and is never typed",
+        "description": "What it COST us on that project. What the project is billed follows from its rule, and is never typed",
         "minimum": 0,
         "title": "Amount",
         "type": "number"
@@ -490,6 +490,54 @@
     "title": "cancel_announcementArguments",
     "type": "object"
   },
+  "check_expense_balance": {
+    "additionalProperties": false,
+    "properties": {
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The account at the provider (`list_deposit_accounts`). Or name a subscription instead",
+        "title": "Account Id"
+      },
+      "balance": {
+        "description": "What the provider's dashboard says is left",
+        "minimum": 0,
+        "title": "Balance",
+        "type": "number"
+      },
+      "expense_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "A subscription paid from the account — its account is the one meant",
+        "title": "Expense Id"
+      },
+      "on": {
+        "description": "The day it was read, YYYY-MM-DD",
+        "title": "On",
+        "type": "string"
+      }
+    },
+    "required": [
+      "on",
+      "balance"
+    ],
+    "title": "check_expense_balanceArguments",
+    "type": "object"
+  },
   "comment_on_task": {
     "additionalProperties": false,
     "properties": {
@@ -525,8 +573,24 @@
           }
         ],
         "default": null,
-        "description": "The real figure for that day, whole — it is then re-split by the shares. Left out, what is recorded stands",
+        "description": "The real figure for that day, whole — each project is then billed by its rule and the bill divided by what each is billed. Left out, what is recorded stands",
         "title": "Amount"
+      },
+      "billed": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What a project is billed for THIS day instead of its rule, by project id — \"Lizex pays 5 this month\". The arrangement is not changed",
+        "title": "Billed"
       },
       "charged_on": {
         "description": "The charge date being confirmed, YYYY-MM-DD",
@@ -1048,6 +1112,52 @@
     "title": "create_companyArguments",
     "type": "object"
   },
+  "create_deposit_account": {
+    "additionalProperties": false,
+    "properties": {
+      "currency": {
+        "default": "USD",
+        "description": "What its balance is kept in",
+        "title": "Currency",
+        "type": "string"
+      },
+      "low_balance_cycles": {
+        "default": 2,
+        "description": "Warn when it covers fewer months than this",
+        "maximum": 60,
+        "minimum": 0,
+        "title": "Low Balance Cycles",
+        "type": "integer"
+      },
+      "name": {
+        "description": "What the account is called here",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Name",
+        "type": "string"
+      },
+      "paid_from": {
+        "default": "",
+        "description": "Where the money put on it comes from",
+        "maxLength": 120,
+        "title": "Paid From",
+        "type": "string"
+      },
+      "vendor": {
+        "description": "The provider",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Vendor",
+        "type": "string"
+      }
+    },
+    "required": [
+      "vendor",
+      "name"
+    ],
+    "title": "create_deposit_accountArguments",
+    "type": "object"
+  },
   "create_epic": {
     "additionalProperties": false,
     "properties": {
@@ -1092,16 +1202,78 @@
         "title": "Currency",
         "type": "string"
       },
+      "deposit_account_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Paid from a deposit: the account at the provider it is paid from — one several subscriptions may share (`list_deposit_accounts`). Left out on a subscription with none, it gets an account of its own named after its vendor",
+        "title": "Deposit Account Id"
+      },
+      "deposit_billing": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How a deposit reaches the client: actual (the cycles, as charged) or prepaid (each top-up billed at once; the cycles it covers are not billed again)",
+        "title": "Deposit Billing"
+      },
+      "deposit_manual": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "A deposit whose provider still wants each bill paid by a press in its dashboard",
+        "title": "Deposit Manual"
+      },
       "is_variable": {
         "default": false,
         "description": "The provider decides the figure each time — a CDN billed on traffic. `amount` is then the last known one, and every charge waits to be confirmed",
         "title": "Is Variable",
         "type": "boolean"
       },
+      "new_deposit_account": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Paid from a deposit: open a new account at the provider by this name",
+        "title": "New Deposit Account"
+      },
       "next_charge_on": {
-        "description": "Date of the next charge, YYYY-MM-DD — or the only one, for a one-off",
-        "title": "Next Charge On",
-        "type": "string"
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Date of the next charge, YYYY-MM-DD — or the only one, for a one-off. Required, except `usage`, which has no charge day",
+        "title": "Next Charge On"
       },
       "note": {
         "default": "",
@@ -1109,21 +1281,48 @@
         "title": "Note",
         "type": "string"
       },
+      "paid_from": {
+        "anyOf": [
+          {
+            "maxLength": 120,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Where the money comes from — a card, a wallet — in words",
+        "title": "Paid From"
+      },
       "payment_fee": {
         "default": 0,
-        "description": "What it costs to PAY it — a transfer charge, a card fee. Money out of the same door, so a project paying its share pays its share of this too",
+        "description": "What it costs to PAY it — a transfer charge, a card fee. Money out of the same door, so a project billed a percentage of the bill pays that percentage of this too",
         "minimum": 0,
         "title": "Payment Fee",
         "type": "number"
       },
+      "payment_method": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How WE pay the provider: by_hand (somebody pays each cycle), autopay (the provider takes it; each cycle is recorded already paid), or deposit (out of money put on our account there ahead)",
+        "title": "Payment Method"
+      },
       "period": {
         "default": "monthly",
-        "description": "How often it comes round",
+        "description": "How often it comes round: one_off, monthly, annual — or usage, a deposit drawn on by traffic with no charge day, paid from the deposit, charged by each balance reading",
         "title": "Period",
         "type": "string"
       },
       "shares": {
-        "description": "Who pays what, as [{\"project_id\": \"…\", \"share\": 50, \"price\": 11}]. `share` is per cent of the PROVIDER bill and the shares sum to 100; `price` is what that project is charged for one occurrence, absolute and in the currency of the expense. `markup` (per cent on top of what its part cost) instead of `price` where the bill moves with usage; never both. Neither means the project pays its part of the bill",
+        "description": "Each project and how it is billed, as [{\"project_id\": \"…\", \"billing\": \"percent\", \"percent\": 100}, {\"project_id\": \"…\", \"billing\": \"fixed\", \"price\": 4}, {\"project_id\": \"…\", \"billing\": \"none\"}]. `percent` is a whole per cent of the provider bill plus its payment fee — 100 the bill, 105 the bill and 5% on top — with no upper bound and NOTHING has to add up across projects. `fixed` is a price per charge in the currency of the expense, whatever the bill was. `none` is our own cost, never billed. Which part of the bill each project accounts for follows from what each is billed and is not typed",
         "items": {
           "additionalProperties": true,
           "type": "object"
@@ -1150,7 +1349,6 @@
       "vendor",
       "title",
       "amount",
-      "next_charge_on",
       "shares"
     ],
     "title": "create_expenseArguments",
@@ -1955,7 +2153,7 @@
           }
         ],
         "default": null,
-        "description": "Which larger piece of work it is part of — from `list_epics`, and on the SAME project",
+        "description": "Which larger piece of work it is part of — read `list_epics` first and pass it whenever an open epic covers this work; same project",
         "title": "Epic Id"
       },
       "performer_id": {
@@ -2120,6 +2318,21 @@
     "title": "delete_attachmentArguments",
     "type": "object"
   },
+  "delete_deposit_account": {
+    "additionalProperties": false,
+    "properties": {
+      "account_id": {
+        "description": "The account (`list_deposit_accounts`)",
+        "title": "Account Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "account_id"
+    ],
+    "title": "delete_deposit_accountArguments",
+    "type": "object"
+  },
   "delete_epic": {
     "additionalProperties": false,
     "properties": {
@@ -2178,6 +2391,21 @@
       "receipt_id"
     ],
     "title": "delete_expense_receiptArguments",
+    "type": "object"
+  },
+  "delete_expense_top_up": {
+    "additionalProperties": false,
+    "properties": {
+      "top_up_id": {
+        "description": "Top-up id",
+        "title": "Top Up Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "top_up_id"
+    ],
+    "title": "delete_expense_top_upArguments",
     "type": "object"
   },
   "delete_integration": {
@@ -2511,6 +2739,32 @@
     "title": "expense_charge_totalsArguments",
     "type": "object"
   },
+  "expense_summary": {
+    "additionalProperties": false,
+    "properties": {
+      "currency": {
+        "default": "USD",
+        "description": "USD, EUR or UAH: what every figure is given in",
+        "title": "Currency",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      }
+    },
+    "title": "expense_summaryArguments",
+    "type": "object"
+  },
   "get_attachment_download_link": {
     "additionalProperties": false,
     "properties": {
@@ -2539,6 +2793,39 @@
       "expense_id"
     ],
     "title": "get_expenseArguments",
+    "type": "object"
+  },
+  "get_expense_deposit": {
+    "additionalProperties": false,
+    "properties": {
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The account at the provider (`list_deposit_accounts`). Or name a subscription instead",
+        "title": "Account Id"
+      },
+      "expense_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "A subscription paid from the account — its account is the one meant",
+        "title": "Expense Id"
+      }
+    },
+    "title": "get_expense_depositArguments",
     "type": "object"
   },
   "get_invoice": {
@@ -2879,6 +3166,12 @@
     "title": "list_companiesArguments",
     "type": "object"
   },
+  "list_deposit_accounts": {
+    "additionalProperties": false,
+    "properties": {},
+    "title": "list_deposit_accountsArguments",
+    "type": "object"
+  },
   "list_epics": {
     "additionalProperties": false,
     "properties": {
@@ -3067,6 +3360,40 @@
       "expense_id"
     ],
     "title": "list_expense_receiptsArguments",
+    "type": "object"
+  },
+  "list_expense_schedule": {
+    "additionalProperties": false,
+    "properties": {
+      "end": {
+        "description": "Last day, YYYY-MM-DD",
+        "title": "End",
+        "type": "string"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "start": {
+        "description": "First day, YYYY-MM-DD",
+        "title": "Start",
+        "type": "string"
+      }
+    },
+    "required": [
+      "start",
+      "end"
+    ],
+    "title": "list_expense_scheduleArguments",
     "type": "object"
   },
   "list_expenses": {
@@ -4959,6 +5286,62 @@
     "title": "organisation_planArguments",
     "type": "object"
   },
+  "pay_next_expense_charge": {
+    "additionalProperties": false,
+    "properties": {
+      "amount": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The provider's figure, for a bill that varies; the last known one when left out",
+        "title": "Amount"
+      },
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      },
+      "fee": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What paying it cost",
+        "title": "Fee"
+      },
+      "paid_on": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "When it was paid, YYYY-MM-DD; today when left out",
+        "title": "Paid On"
+      }
+    },
+    "required": [
+      "expense_id"
+    ],
+    "title": "pay_next_expense_chargeArguments",
+    "type": "object"
+  },
   "read_all_notifications": {
     "additionalProperties": false,
     "properties": {},
@@ -6648,6 +7031,88 @@
     "title": "task_totals_breakdownArguments",
     "type": "object"
   },
+  "top_up_expense": {
+    "additionalProperties": false,
+    "properties": {
+      "account_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The account at the provider (`list_deposit_accounts`). Or name a subscription instead",
+        "title": "Account Id"
+      },
+      "amount": {
+        "description": "What landed on the account, in the account's currency",
+        "exclusiveMinimum": 0,
+        "title": "Amount",
+        "type": "number"
+      },
+      "expense_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "A subscription paid from the account — its account is the one meant",
+        "title": "Expense Id"
+      },
+      "fee": {
+        "default": 0,
+        "description": "What sending it cost, on top",
+        "minimum": 0,
+        "title": "Fee",
+        "type": "number"
+      },
+      "kind": {
+        "default": "top_up",
+        "description": "top_up (we put money in) or refund (the provider put money back)",
+        "title": "Kind",
+        "type": "string"
+      },
+      "months": {
+        "default": 1,
+        "description": "For a subscription billed PREPAID: how many cycles a fixed-price project is billed for by this top-up. Percentage projects are billed their part of the subscription's share",
+        "maximum": 60,
+        "minimum": 1,
+        "title": "Months",
+        "type": "integer"
+      },
+      "note": {
+        "default": "",
+        "description": "Anything worth keeping",
+        "title": "Note",
+        "type": "string"
+      },
+      "on": {
+        "description": "The day the money landed, YYYY-MM-DD",
+        "title": "On",
+        "type": "string"
+      },
+      "url": {
+        "default": "",
+        "description": "The transaction or the provider page",
+        "maxLength": 1000,
+        "title": "Url",
+        "type": "string"
+      }
+    },
+    "required": [
+      "on",
+      "amount"
+    ],
+    "title": "top_up_expenseArguments",
+    "type": "object"
+  },
   "unarchive_notification": {
     "additionalProperties": false,
     "properties": {
@@ -6869,6 +7334,80 @@
     "title": "update_companyArguments",
     "type": "object"
   },
+  "update_deposit_account": {
+    "additionalProperties": false,
+    "properties": {
+      "account_id": {
+        "description": "The account (`list_deposit_accounts`)",
+        "title": "Account Id",
+        "type": "string"
+      },
+      "low_balance_cycles": {
+        "anyOf": [
+          {
+            "maximum": 60,
+            "minimum": 0,
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Warn when it covers fewer months than this",
+        "title": "Low Balance Cycles"
+      },
+      "name": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "What it is called",
+        "title": "Name"
+      },
+      "paid_from": {
+        "anyOf": [
+          {
+            "maxLength": 120,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Where its money comes from",
+        "title": "Paid From"
+      },
+      "vendor": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The provider",
+        "title": "Vendor"
+      }
+    },
+    "required": [
+      "account_id"
+    ],
+    "title": "update_deposit_accountArguments",
+    "type": "object"
+  },
   "update_epic": {
     "additionalProperties": false,
     "properties": {
@@ -6959,6 +7498,45 @@
         "description": "Currency it is paid in",
         "title": "Currency"
       },
+      "deposit_account_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Paid from a deposit: the account at the provider it is paid from — one several subscriptions may share (`list_deposit_accounts`). Left out on a subscription with none, it gets an account of its own named after its vendor",
+        "title": "Deposit Account Id"
+      },
+      "deposit_billing": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How a deposit reaches the client: actual (the cycles, as charged) or prepaid (each top-up billed at once; the cycles it covers are not billed again)",
+        "title": "Deposit Billing"
+      },
+      "deposit_manual": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "A deposit whose provider still wants each bill paid by a press in its dashboard",
+        "title": "Deposit Manual"
+      },
       "ended_on": {
         "anyOf": [
           {
@@ -6990,6 +7568,21 @@
         "description": "The provider decides the figure each time — a CDN billed on traffic. `amount` is then the last known one, and every charge waits to be confirmed",
         "title": "Is Variable"
       },
+      "new_deposit_account": {
+        "anyOf": [
+          {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Paid from a deposit: open a new account at the provider by this name",
+        "title": "New Deposit Account"
+      },
       "next_charge_on": {
         "anyOf": [
           {
@@ -7016,6 +7609,20 @@
         "description": "Anything worth keeping",
         "title": "Note"
       },
+      "paid_from": {
+        "anyOf": [
+          {
+            "maxLength": 120,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Where the money comes from — a card, a wallet — in words",
+        "title": "Paid From"
+      },
       "payment_fee": {
         "anyOf": [
           {
@@ -7030,6 +7637,19 @@
         "description": "What it costs to pay it, on top of the amount",
         "title": "Payment Fee"
       },
+      "payment_method": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "How WE pay the provider: by_hand (somebody pays each cycle), autopay (the provider takes it; each cycle is recorded already paid), or deposit (out of money put on our account there ahead)",
+        "title": "Payment Method"
+      },
       "period": {
         "anyOf": [
           {
@@ -7040,7 +7660,7 @@
           }
         ],
         "default": null,
-        "description": "one_off, monthly or annual",
+        "description": "one_off, monthly, annual, or usage (no charge day; the next charge is cleared)",
         "title": "Period"
       },
       "shares": {
@@ -7057,7 +7677,7 @@
           }
         ],
         "default": null,
-        "description": "A new split; must sum to 100",
+        "description": "A new, WHOLE set of projects and how each is billed — the shape `create_expense` takes",
         "title": "Shares"
       },
       "title": {
@@ -7111,7 +7731,7 @@
           }
         ],
         "default": null,
-        "description": "What it cost us. The billed figure follows from the share",
+        "description": "What it cost us. The billed figure follows from the project's rule",
         "title": "Amount"
       },
       "charge_id": {

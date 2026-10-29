@@ -78,6 +78,11 @@ One task per merge request is the rule for SIZE, and it decides most splits on
 its own. What it does not decide is ORDER, and that is where a backlog is
 either useful or a list nobody reads.
 
+* **A plan gets an epic, and the epic holds the decision.**
+  `create_epic(project_id=…, title=…, description=…)` once, then every task of
+  the plan names it. The epic's description is where "why this way" is written
+  down; repeated in each task it becomes five copies that drift, and a reader
+  who opens one task gets the whole argument for nothing.
 * **Sequence by what the next task needs.** If B cannot be written until A
   lands, that is a `blocks` link and A goes first — not a sentence in B's
   description that somebody has to notice. The link is what `nu-queue` reads.
@@ -107,6 +112,16 @@ create_task(performer_id=…, title=…, description=…, status='todo')
   reader has instead of you.
 * **A task belongs to a PERFORMER, not to a user.** A person on two projects is
   two performers; `list_performers(project_id=…)` is where the id comes from.
+* **It names its epic, if one covers it.** `list_epics(project_id=…)` first,
+  then `epic_id` on the call. An epic that exists while new tasks are filed
+  outside it is an epic nobody reading it can trust — and the tracker's own
+  epics are how anybody tells one piece of work from the next.
+* **The links go on in the same breath.**
+  `link_tasks(task_id=…, to_task_id=…, kind='blocks')` for what this task
+  waits for, and for what it unblocks. Left for later it is left for never:
+  "blocked by NUC-142" in a description is read by nobody, `nu-queue` marks a
+  row `!` only from a link, and `nu-start` refuses only what a link says is
+  blocked.
 * One task per merge request. Work spanning two repositories is ONE task — it
   is one piece of work, and the branch name is the same on both sides.
 
