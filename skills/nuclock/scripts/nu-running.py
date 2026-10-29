@@ -7,7 +7,9 @@ reads the line.
 
 An unreachable tracker exits 2, kept apart from "nothing is running" on
 purpose — a hook must not tell somebody their timer is off because the network
-was down for a second.
+was down for a second. No credential at all exits 3, kept apart from BOTH: a
+hook stays quiet about a blink and says once that nobody told it who you are
+(NUC-601).
 """
 
 from __future__ import annotations
@@ -23,9 +25,12 @@ import _nuclock as nu  # noqa: E402
 def main() -> int:
     try:
         timer = nu.running_timer()
-    except (nu.NoKeyError, nu.ApiError) as err:
+    except nu.NoKeyError as err:
         print(f'nuclock: {err}', file=sys.stderr)
-        return 2
+        return nu.NO_CREDENTIAL
+    except nu.ApiError as err:
+        print(f'nuclock: {err}', file=sys.stderr)
+        return nu.UNREACHABLE
     if not timer:
         print('no timer is running')
         return 1

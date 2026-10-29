@@ -91,14 +91,36 @@ must not reach for that flag on its own: a retry is not a decision.
 
 ## The key
 
-The scripts use the person's OWN key, read from `NUCLOCK_API_KEY` or from the
-nuclock MCP server's header in `~/.claude.json` — so somebody who set the tools
-up once does not set up a second credential. Nothing here writes a key
-anywhere, prints one, or passes one as a command-line argument.
+The scripts use the person's OWN credential. It is looked for in this order,
+and nothing here writes a key anywhere, prints one, or passes one as a
+command-line argument (an argument is visible in `ps` to everybody on the
+machine):
+
+1. `NUCLOCK_API_KEY`;
+2. the nuclock MCP server's `Authorization` header in the Claude Code config —
+   `$CLAUDE_CONFIG_DIR/.claude.json` when that variable is set, and
+   `~/.claude.json`, in the person's own scope and in each project's, because
+   `claude mcp add` writes the project one by default.
+
+**An assistant signed in through an identity provider leaves a script
+nothing.** That connection's token lives inside Claude Code, not in the config,
+so there is no header to borrow — and then the scripts need a key of their own
+in `NUCLOCK_API_KEY`. A `write` key with **no abilities** is enough: everything
+these scripts touch — tasks, timers, time entries — is ungated, while people,
+seats, projects and integrations need an ability the key was minted with.
 
 A key carries its owner's access, and the scripts say so rather than retrying:
 a read-only key fails a write because of its scope, and "permission denied" is
 an answer about what that person may see.
+
+**Three exit statuses, because the hooks must tell them apart.** `0` and `1`
+are answers; `2` means the tracker could not be ASKED — a blink, and the hooks
+stay silent, because "your timer is off" when the network hiccupped teaches
+people to ignore the warning. `3` means no credential was found at all, which
+is a gap somebody can close: the editing hook says it once per session and the
+session's start tells the assistant, so an unreadable queue is not mistaken for
+an empty backlog. Those two shared `2` once, and the day the assistant moved to
+the identity provider the whole plugin went off without a word.
 
 ## The scripts
 
