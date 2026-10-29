@@ -40,7 +40,10 @@ def main() -> int:
         return 0
     if answer.returncode != 0:
         # 1 is "nothing running", which is the good case; 2 is "could not
-        # ask", which is not worth a message either.
+        # ask", which is not worth a message either. 3 is "no credential",
+        # which the editing hook and the session's start have each said once
+        # already — repeating it as a session closes is a line nobody can act
+        # on at that moment (NUC-601).
         return 0
 
     print(json.dumps({

@@ -152,6 +152,48 @@ for pair in session-start.py:QUEUE editing-without-a-timer.py:RUNNING session-en
   check "${pair%%:*} finds its script" 'True' "$found"
 done
 
+echo 'no credential at all'
+
+# The failure this section exists for: the plugin borrowed its key from the MCP
+# server's header, the assistant moved to the identity provider, the header
+# stopped existing — and every hook read the refusal as "the tracker is down"
+# and said nothing. A gap somebody can fix must not wear the costume of a
+# network blink (NUC-601).
+
+stub 3 'nuclock: no NUCLOCK_API_KEY, and the nuclock assistant is signed in at the identity provider'
+out=$(echo '{"session_id":"blind-'"$RUN"'","tool_name":"Edit"}' | python3 hooks/editing-without-a-timer.py)
+check 'says the scripts have no credential' 'yes' "$(says "$out" 'no credential')"
+check 'and never blocks the tool for it either' 'no' "$(says "$out" 'permissionDecision')"
+out=$(echo '{"session_id":"blind-'"$RUN"'","tool_name":"Edit"}' | python3 hooks/editing-without-a-timer.py)
+check 'says it once per session, not on every edit' '' "$out"
+
+out=$(echo '{"session_id":"blind-end-'"$RUN"'"}' | python3 hooks/session-end.py)
+check 'a closing session does not repeat it' '' "$out"
+
+# The queue hook asks a different script, so it gets a stub of its own.
+queue_stub() {
+  { echo '#!/usr/bin/env python3'; echo "raise SystemExit($1)"; } > "$WORK/nu-queue.py"
+  export NUCLOCK_QUEUE="$WORK/nu-queue.py"
+}
+
+queue_stub 3
+out=$(echo '{"session_id":"start-'"$RUN"'"}' | python3 hooks/session-start.py)
+check 'the session start tells the assistant rather than showing an empty queue' 'yes' "$(says "$out" 'no credential')"
+queue_stub 2
+out=$(echo '{"session_id":"start-down-'"$RUN"'"}' | python3 hooks/session-start.py)
+check 'and stays quiet when the tracker cannot be asked' '' "$out"
+unset NUCLOCK_QUEUE
+
+# A hook cannot import the scripts, so the number lives in three files. One of
+# them drifting is the bug this check exists for.
+codes=$(python3 tests/exit_codes.py)
+check 'the exit status is one number in all three files' '3 3 3' "$codes"
+
+echo 'where the credential is looked for'
+
+looked=$(WORK="$WORK" python3 tests/credential_lookup.py)
+check 'the provider is named as the reason, and both scopes are read' 'provider nuc_local nuc_top' "$looked"
+
 echo
 if [ "$failures" -eq 0 ]; then
   echo 'all good'

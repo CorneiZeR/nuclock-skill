@@ -3,10 +3,12 @@
 Imported by everything else here. Three decisions worth knowing about:
 
 **The key is read from where it already is** — `NUCLOCK_API_KEY`, or the MCP
-server's own header in `~/.claude.json`. Somebody who set the tools up once
-does not set up a second credential for these scripts, and nothing here writes
-the key anywhere, prints it, or passes it as an argument (an argument is
-visible in `ps` to everybody on the machine).
+server's own header in a Claude Code config. Somebody who set the tools up
+once does not set up a second credential for these scripts, and nothing here
+writes the key anywhere, prints it, or passes it as an argument (an argument is
+visible in `ps` to everybody on the machine). An assistant signed in through
+the identity provider has no header to borrow, and that is `NO_CREDENTIAL`
+rather than a failure to reach anything — see the two statuses below.
 
 **Reads are not retried.** These run in front of a person who is waiting, and a
 tracker that is down is worth hearing about at once rather than after three
@@ -35,6 +37,19 @@ import urllib.request
 API = os.environ.get('NUCLOCK_API_URL', 'https://api.clock.nuspect.net')
 TIMEOUT = 15
 
+#: What a script exits with when it could not ASK — the network, the host, a
+#: refusal. A hook stays quiet on this one: "your timer is off" because a
+#: connection blinked is worse than silence.
+UNREACHABLE = 2
+
+#: And what it exits with when nobody told it WHO the person is. Kept apart
+#: from `UNREACHABLE`, because the two want different answers: a blink is
+#: waited out, a missing credential is somebody's to fix. The hooks swallowed
+#: both while they shared `2`, so the day the assistant moved to the identity
+#: provider — and the header these scripts had been borrowing stopped existing
+#: — the whole plugin went silently off (NUC-601).
+NO_CREDENTIAL = 3
+
 
 class NoKeyError(RuntimeError):
     """No credential anywhere this knows to look."""
@@ -44,20 +59,78 @@ class ApiError(RuntimeError):
     """The tracker answered, and the answer was not one we can use."""
 
 
+def configs() -> list[pathlib.Path]:
+    """The Claude Code configs to look in, the session's own first.
+
+    `CLAUDE_CONFIG_DIR` is how one machine holds several installations side by
+    side, and a script runs inside whichever session asked it — so that
+    session's config is the one describing its tracker. `~/.claude.json` is
+    the default and is read as well, because somebody with aliases still keeps
+    one of them plain.
+    """
+    paths = []
+    chosen = os.environ.get('CLAUDE_CONFIG_DIR')
+    if chosen:
+        paths.append(pathlib.Path(chosen).expanduser() / '.claude.json')
+    paths.append(pathlib.Path.home() / '.claude.json')
+    return [path for index, path in enumerate(paths) if path not in paths[:index]]
+
+
+def servers(config: pathlib.Path) -> tuple[list[dict], bool]:
+    """Every nuclock entry in one config, and whether the file defeated us.
+
+    Two scopes hold one: the person's own `mcpServers`, and each project's —
+    `claude mcp add` writes the second by default, so a tracker configured in
+    the repository somebody works in lives there and nowhere else.
+    """
+    try:
+        body = json.loads(config.read_text(encoding='utf-8'))
+    except FileNotFoundError:
+        return [], False
+    except (OSError, ValueError):
+        # Unreadable or half-written. Said in the refusal below rather than
+        # raised here: one unreadable config must not hide a key in the next.
+        return [], True
+    found = []
+    scopes = [body.get('mcpServers')]
+    scopes += [(project or {}).get('mcpServers') for project in (body.get('projects') or {}).values()]
+    for scope in scopes:
+        entry = (scope or {}).get('nuclock')
+        if isinstance(entry, dict):
+            found.append(entry)
+    return found, False
+
+
 def key() -> str:
-    """The Authorization header value, as the API expects it."""
+    """The Authorization header value, as the API expects it.
+
+    Order: the environment, because CI has no browser and must be able to say
+    so outright; then every nuclock entry in every config this session could
+    mean. Nothing found is `NoKeyError`, and its sentence says WHICH of the
+    three nothings it was — no entry at all, an entry with no header (an
+    assistant signed in at the provider), or a config that could not be read.
+    """
     from_env = os.environ.get('NUCLOCK_API_KEY')
     if from_env:
         return from_env if from_env.startswith('Api-Key ') else f'Api-Key {from_env}'
-    config = pathlib.Path.home() / '.claude.json'
-    try:
-        servers = json.loads(config.read_text(encoding='utf-8')).get('mcpServers', {})
-    except (OSError, ValueError) as err:
-        raise NoKeyError('no NUCLOCK_API_KEY, and ~/.claude.json is unreadable') from err
-    header = (servers.get('nuclock', {}).get('headers', {}) or {}).get('Authorization')
-    if not header:
-        raise NoKeyError('no NUCLOCK_API_KEY, and no nuclock MCP server is configured')
-    return header
+    connected = unreadable = False
+    for config in configs():
+        entries, broken = servers(config)
+        unreadable = unreadable or broken
+        for entry in entries:
+            header = (entry.get('headers') or {}).get('Authorization')
+            if header:
+                return header
+            connected = True
+    if connected:
+        raise NoKeyError(
+            'no NUCLOCK_API_KEY, and the nuclock assistant is signed in at the identity provider, '
+            'which leaves a script nothing to read — issue a key for the scripts (a `write` key with '
+            'no abilities is enough)',
+        )
+    if unreadable:
+        raise NoKeyError('no NUCLOCK_API_KEY, and the Claude Code config could not be read')
+    raise NoKeyError('no NUCLOCK_API_KEY, and no nuclock MCP server is configured')
 
 
 def get(path: str) -> object:

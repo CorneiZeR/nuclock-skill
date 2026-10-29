@@ -54,7 +54,10 @@ def main() -> int:
     try:
         task = nu.task_by_key(args.key)
         running = nu.running_timer()
-    except (nu.NoKeyError, nu.ApiError) as err:
+    except nu.NoKeyError as err:
+        print(f'nuclock: {err}', file=sys.stderr)
+        return nu.NO_CREDENTIAL
+    except nu.ApiError as err:
         print(f'nuclock: {err}', file=sys.stderr)
         return 1
 

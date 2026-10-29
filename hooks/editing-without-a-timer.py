@@ -21,6 +21,12 @@ warning nobody reads.
 
 An unreachable tracker says NOTHING. "Your timer is off" because the network
 blinked is worse than silence: it teaches people to ignore the hook.
+
+**No credential is a different answer, and it is said once.** A blink is
+waited out; "nobody told me who you are" is somebody's to fix, and the hook
+that swallows it is a hook that has quietly stopped working — which is exactly
+what happened when the assistant moved to the identity provider and the header
+these scripts borrowed stopped existing (NUC-601).
 """
 
 from __future__ import annotations
@@ -50,9 +56,22 @@ CACHE_SECONDS = 300
 #: the next one for the session.
 CLAIM_SECONDS = 20
 
+#: What `nu-running.py` exits with when nobody told it who the person is —
+#: `_nuclock.NO_CREDENTIAL`, kept in step by `tests/run.sh`, which reads the
+#: number out of both. A hook cannot import the scripts: it runs one as a
+#: subprocess, and a stub stands in for it under test.
+NO_CREDENTIAL = 3
+
 
 def marker(kind: str, session: str) -> Path:
     return marker_directory() / f'nuclock-{kind}-{session or "unknown"}'
+
+
+def say(once: Path, sentence: str) -> int:
+    """Tell the person once, and leave the note that says it was told."""
+    once.touch()
+    print(json.dumps({'systemMessage': sentence}))
+    return 0
 
 
 @functools.cache
@@ -106,9 +125,14 @@ def main() -> int:
 
     session = str(event.get('session_id', ''))
     told, asked = marker('told', session), marker('asked', session)
+    blind = marker('nocred', session)
     # Told once, and that is the end of it for this session: a warning
     # repeated every five minutes is a warning people learn to scroll past.
-    if told.exists() or asked_recently(asked):
+    # Having said there is no credential ends it too — the sentence has been
+    # given, and asking again would spend a process on every edit to learn the
+    # same thing. Somebody who fixes it gets the warnings from the next
+    # session, which is when the fix is in place anyway.
+    if told.exists() or blind.exists() or asked_recently(asked):
         return 0
 
     # One asker at a time. Claude Code fires this hook for tool calls that run
@@ -138,22 +162,27 @@ def main() -> int:
         with contextlib.suppress(OSError):
             claim.unlink()
 
-    # 2 is "could not ask" — the network, the key, the tracker. Silence.
+    # 3 is "nobody told it who you are": a gap in the configuration rather
+    # than a blink, and the only one of the three somebody can act on.
+    if answer.returncode == NO_CREDENTIAL:
+        return say(blind, (
+            'nuclock: the scripts have no credential, so the queue at session start and the '
+            'timer checks are off — the MCP tools are unaffected. An assistant signed in at '
+            'the identity provider leaves a script nothing to read: issue a key for the '
+            'scripts (a `write` key with no abilities is enough) and put it in NUCLOCK_API_KEY.'
+        ))
+    # 2 is "could not ask" — the network, the tracker itself. Silence.
     if answer.returncode != 1:
         if answer.returncode == 0:
             asked.touch()
         return 0
 
-    told.touch()
-    print(json.dumps({
-        'systemMessage': (
-            'nuclock: no timer is running, and this session is changing code. '
-            'Start one (start_timer) or, if the work belongs to something '
-            'already open, park it — hours reconstructed later are the ones '
-            'that get argued about.'
-        ),
-    }))
-    return 0
+    return say(told, (
+        'nuclock: no timer is running, and this session is changing code. '
+        'Start one (start_timer) or, if the work belongs to something '
+        'already open, park it — hours reconstructed later are the ones '
+        'that get argued about.'
+    ))
 
 
 if __name__ == '__main__':
