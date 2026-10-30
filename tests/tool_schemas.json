@@ -538,6 +538,21 @@
     "title": "check_expense_balanceArguments",
     "type": "object"
   },
+  "close_performer": {
+    "additionalProperties": false,
+    "properties": {
+      "performer_id": {
+        "description": "Performer id",
+        "title": "Performer Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "performer_id"
+    ],
+    "title": "close_performerArguments",
+    "type": "object"
+  },
   "comment_on_task": {
     "additionalProperties": false,
     "properties": {
@@ -5493,6 +5508,21 @@
       "expense_id"
     ],
     "title": "record_expense_chargesArguments",
+    "type": "object"
+  },
+  "reopen_performer": {
+    "additionalProperties": false,
+    "properties": {
+      "performer_id": {
+        "description": "Performer id",
+        "title": "Performer Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "performer_id"
+    ],
+    "title": "reopen_performerArguments",
     "type": "object"
   },
   "report_bounds": {
