@@ -2828,6 +2828,21 @@
     "title": "get_expense_depositArguments",
     "type": "object"
   },
+  "get_integration": {
+    "additionalProperties": false,
+    "properties": {
+      "integration_id": {
+        "description": "Integration id",
+        "title": "Integration Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "integration_id"
+    ],
+    "title": "get_integrationArguments",
+    "type": "object"
+  },
   "get_invoice": {
     "additionalProperties": false,
     "properties": {
@@ -3468,6 +3483,39 @@
   "list_integrations": {
     "additionalProperties": false,
     "properties": {
+      "external_project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only the connection to this target, matched exactly as it was typed",
+        "title": "External Project Id"
+      },
+      "kind": {
+        "anyOf": [
+          {
+            "enum": [
+              "openproject",
+              "gitlab",
+              "linear",
+              "github",
+              "jira"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only connections of this kind",
+        "title": "Kind"
+      },
       "project_id": {
         "anyOf": [
           {
@@ -3961,6 +4009,19 @@
         "default": null,
         "description": "Restrict to one project",
         "title": "Project Id"
+      },
+      "user_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only this person's seats; with project_id, their one seat there",
+        "title": "User Id"
       }
     },
     "title": "list_performersArguments",
@@ -3996,6 +4057,19 @@
         "default": null,
         "description": "True for live projects, false for archived ones; omit for both",
         "title": "Is Active"
+      },
+      "key_prefix": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The one project whose task keys lead with this (`NUC`), in any case",
+        "title": "Key Prefix"
       },
       "limit": {
         "default": 25,
@@ -4479,6 +4553,19 @@
   "list_users": {
     "additionalProperties": false,
     "properties": {
+      "email": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The one person with this email, in any case — not a search",
+        "title": "Email"
+      },
       "limit": {
         "default": 25,
         "description": "Rows per page",
