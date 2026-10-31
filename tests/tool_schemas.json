@@ -3551,19 +3551,6 @@
   "list_invoices": {
     "additionalProperties": false,
     "properties": {
-      "is_paid": {
-        "anyOf": [
-          {
-            "type": "boolean"
-          },
-          {
-            "type": "null"
-          }
-        ],
-        "default": null,
-        "description": "True: only the settled ones. False: only what is still owed. Omit for both",
-        "title": "Is Paid"
-      },
       "limit": {
         "default": 25,
         "description": "Rows per page",
@@ -3591,6 +3578,24 @@
         "default": null,
         "description": "Restrict to one project",
         "title": "Project Id"
+      },
+      "stage": {
+        "anyOf": [
+          {
+            "enum": [
+              "owing",
+              "paid",
+              "nothing_owed"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "`owing`: unpaid with something on it — what is still owed. `paid`: settled. `nothing_owed`: unpaid at zero. The three partition every invoice; omit for all",
+        "title": "Stage"
       }
     },
     "title": "list_invoicesArguments",
@@ -5677,71 +5682,6 @@
       "task_id"
     ],
     "title": "start_timerArguments",
-    "type": "object"
-  },
-  "stats_client": {
-    "additionalProperties": false,
-    "properties": {
-      "compare": {
-        "default": "previous",
-        "description": "`previous`: the buckets moved back by the period (whole weeks / months for those groupings); `year`: the same dates a year back; `none`",
-        "enum": [
-          "previous",
-          "year",
-          "none"
-        ],
-        "title": "Compare",
-        "type": "string"
-      },
-      "granularity": {
-        "default": "auto",
-        "description": "Bucket size: day, ISO week, month, or `auto` (day to 45 days, week to 182, else month)",
-        "enum": [
-          "auto",
-          "day",
-          "week",
-          "month"
-        ],
-        "title": "Granularity",
-        "type": "string"
-      },
-      "period_from": {
-        "description": "Period start, YYYY-MM-DD, a day in the workspace zone (inclusive)",
-        "title": "Period From",
-        "type": "string"
-      },
-      "period_to": {
-        "description": "Period end, YYYY-MM-DD, a day in the workspace zone (inclusive)",
-        "title": "Period To",
-        "type": "string"
-      },
-      "project_id": {
-        "anyOf": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "null"
-          }
-        ],
-        "default": null,
-        "description": "Restrict to one project",
-        "title": "Project Id"
-      },
-      "top": {
-        "default": 8,
-        "description": "Projects shown before the rest fold into Other (1-20)",
-        "maximum": 20,
-        "minimum": 1,
-        "title": "Top",
-        "type": "integer"
-      }
-    },
-    "required": [
-      "period_from",
-      "period_to"
-    ],
-    "title": "stats_clientArguments",
     "type": "object"
   },
   "stats_costs": {
