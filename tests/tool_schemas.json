@@ -1,4 +1,121 @@
 {
+  "accept_client_request": {
+    "additionalProperties": false,
+    "properties": {
+      "area_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Crafts the work needs; omit to take the seat's own",
+        "title": "Area Ids"
+      },
+      "collaborator_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Others working on it — same project",
+        "title": "Collaborator Ids"
+      },
+      "description": {
+        "default": "",
+        "description": "The task's description",
+        "title": "Description",
+        "type": "string"
+      },
+      "done_time": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "When it was finished (ISO 8601), for work already done",
+        "title": "Done Time"
+      },
+      "epic_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Which epic of the same project, if any",
+        "title": "Epic Id"
+      },
+      "performer_id": {
+        "description": "Who ANSWERS for the task — a seat on the request's project",
+        "title": "Performer Id",
+        "type": "string"
+      },
+      "priority": {
+        "default": "normal",
+        "description": "How urgent",
+        "enum": [
+          "low",
+          "normal",
+          "high",
+          "urgent"
+        ],
+        "title": "Priority",
+        "type": "string"
+      },
+      "request_id": {
+        "description": "Request id — from list_client_requests",
+        "title": "Request Id",
+        "type": "string"
+      },
+      "status": {
+        "default": "todo",
+        "description": "Initial state",
+        "enum": [
+          "todo",
+          "in_progress",
+          "done",
+          "cancelled"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "title": {
+        "description": "The task's title; the request's, or reworded",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      }
+    },
+    "required": [
+      "request_id",
+      "performer_id",
+      "title"
+    ],
+    "title": "accept_client_requestArguments",
+    "type": "object"
+  },
   "add_expense_charge": {
     "additionalProperties": false,
     "properties": {
@@ -221,6 +338,35 @@
       "entry_id"
     ],
     "title": "archive_notificationArguments",
+    "type": "object"
+  },
+  "ask_for_work": {
+    "additionalProperties": false,
+    "properties": {
+      "description": {
+        "default": "",
+        "description": "Markdown, the same subset descriptions use",
+        "title": "Description",
+        "type": "string"
+      },
+      "project_id": {
+        "description": "A project you own — from open_work_projects",
+        "title": "Project Id",
+        "type": "string"
+      },
+      "title": {
+        "description": "What you need, in a line",
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      }
+    },
+    "required": [
+      "project_id",
+      "title"
+    ],
+    "title": "ask_for_workArguments",
     "type": "object"
   },
   "ask_on_task": {
@@ -2349,6 +2495,29 @@
     "title": "current_timerArguments",
     "type": "object"
   },
+  "decline_client_request": {
+    "additionalProperties": false,
+    "properties": {
+      "reason": {
+        "description": "Why — the client reads this",
+        "maxLength": 2000,
+        "minLength": 1,
+        "title": "Reason",
+        "type": "string"
+      },
+      "request_id": {
+        "description": "Request id — from list_client_requests",
+        "title": "Request Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "request_id",
+      "reason"
+    ],
+    "title": "decline_client_requestArguments",
+    "type": "object"
+  },
   "delete_attachment": {
     "additionalProperties": false,
     "properties": {
@@ -3234,6 +3403,59 @@
       "task_ref"
     ],
     "title": "list_client_commentsArguments",
+    "type": "object"
+  },
+  "list_client_requests": {
+    "additionalProperties": false,
+    "properties": {
+      "limit": {
+        "default": 25,
+        "description": "Rows per page",
+        "maximum": 100,
+        "minimum": 1,
+        "title": "Limit",
+        "type": "integer"
+      },
+      "page": {
+        "default": 1,
+        "description": "1-based page number",
+        "minimum": 1,
+        "title": "Page",
+        "type": "integer"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Only this project",
+        "title": "Project Id"
+      },
+      "state": {
+        "anyOf": [
+          {
+            "enum": [
+              "open",
+              "accepted",
+              "declined"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "`open` is what still waits for an answer",
+        "title": "State"
+      }
+    },
+    "title": "list_client_requestsArguments",
     "type": "object"
   },
   "list_companies": {
