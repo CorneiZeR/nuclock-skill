@@ -223,6 +223,27 @@
     "title": "archive_notificationArguments",
     "type": "object"
   },
+  "ask_on_task": {
+    "additionalProperties": false,
+    "properties": {
+      "body": {
+        "description": "Markdown, the same subset descriptions use",
+        "title": "Body",
+        "type": "string"
+      },
+      "task_ref": {
+        "description": "The task, by its key (NUC-142) or id",
+        "title": "Task Ref",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_ref",
+      "body"
+    ],
+    "title": "ask_on_taskArguments",
+    "type": "object"
+  },
   "assign_pending_task": {
     "additionalProperties": false,
     "properties": {
@@ -564,6 +585,16 @@
       "task_id": {
         "description": "Task id",
         "title": "Task Id",
+        "type": "string"
+      },
+      "thread": {
+        "default": "team",
+        "description": "`team`: the team's own conversation, which no client ever reads. `client`: the thread with the project's client, who reads and writes it",
+        "enum": [
+          "team",
+          "client"
+        ],
+        "title": "Thread",
         "type": "string"
       }
     },
@@ -3190,6 +3221,21 @@
     "title": "list_billable_tasksArguments",
     "type": "object"
   },
+  "list_client_comments": {
+    "additionalProperties": false,
+    "properties": {
+      "task_ref": {
+        "description": "The task, by its key (NUC-142) or id",
+        "title": "Task Ref",
+        "type": "string"
+      }
+    },
+    "required": [
+      "task_ref"
+    ],
+    "title": "list_client_commentsArguments",
+    "type": "object"
+  },
   "list_companies": {
     "additionalProperties": false,
     "properties": {},
@@ -4152,6 +4198,16 @@
       "task_id": {
         "description": "Task id",
         "title": "Task Id",
+        "type": "string"
+      },
+      "thread": {
+        "default": "team",
+        "description": "`team`: the team's own conversation, which no client ever reads. `client`: the thread with the project's client, who reads and writes it",
+        "enum": [
+          "team",
+          "client"
+        ],
+        "title": "Thread",
         "type": "string"
       }
     },
