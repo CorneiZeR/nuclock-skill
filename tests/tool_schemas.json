@@ -5455,6 +5455,21 @@
     "title": "pay_next_expense_chargeArguments",
     "type": "object"
   },
+  "project_team": {
+    "additionalProperties": false,
+    "properties": {
+      "project_id": {
+        "description": "Project id",
+        "title": "Project Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "project_id"
+    ],
+    "title": "project_teamArguments",
+    "type": "object"
+  },
   "read_all_notifications": {
     "additionalProperties": false,
     "properties": {},
