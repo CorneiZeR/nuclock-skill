@@ -8843,7 +8843,7 @@
           }
         ],
         "default": null,
-        "description": "Deactivate or reinstate",
+        "description": "Deactivate or reinstate. Deactivating closes every seat the person holds (their history stays); reinstating does not reopen them",
         "title": "Is Active"
       },
       "must_change_password": {
