@@ -2856,6 +2856,104 @@
     "title": "detach_merge_requestArguments",
     "type": "object"
   },
+  "expense_charge_counts": {
+    "additionalProperties": false,
+    "properties": {
+      "billing": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "uninvoiced, awaiting, paid, or covered by a prepayment",
+        "title": "Billing"
+      },
+      "charged_from": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "On or after, YYYY-MM-DD",
+        "title": "Charged From"
+      },
+      "charged_to": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "On or before, YYYY-MM-DD",
+        "title": "Charged To"
+      },
+      "expense_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one arrangement",
+        "title": "Expense Id"
+      },
+      "paid": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Whether WE have paid the provider",
+        "title": "Paid"
+      },
+      "project_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Restrict to one project",
+        "title": "Project Id"
+      },
+      "provisional": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Whether it is still waiting for the provider's real figure",
+        "title": "Provisional"
+      }
+    },
+    "title": "expense_charge_countsArguments",
+    "type": "object"
+  },
   "expense_charge_totals": {
     "additionalProperties": false,
     "properties": {
@@ -2869,7 +2967,7 @@
           }
         ],
         "default": null,
-        "description": "uninvoiced, awaiting or paid",
+        "description": "uninvoiced, awaiting, paid, or covered by a prepayment",
         "title": "Billing"
       },
       "charged_from": {
@@ -3530,7 +3628,7 @@
           }
         ],
         "default": null,
-        "description": "uninvoiced, awaiting or paid — the same three words a task uses, and they are about the CLIENT being billed",
+        "description": "uninvoiced, awaiting or paid — the same three words a task uses, and they are about the CLIENT being billed — or covered, a cycle a prepayment already billed",
         "title": "Billing"
       },
       "charged_from": {
