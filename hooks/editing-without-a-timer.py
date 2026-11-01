@@ -167,9 +167,8 @@ def main() -> int:
     if answer.returncode == NO_CREDENTIAL:
         return say(blind, (
             'nuclock: the scripts have no credential, so the queue at session start and the '
-            'timer checks are off — the MCP tools are unaffected. An assistant signed in at '
-            'the identity provider leaves a script nothing to read: issue a key for the '
-            'scripts (a `write` key with no abilities is enough) and put it in NUCLOCK_API_KEY.'
+            'timer checks are off — the MCP tools are unaffected. Sign the scripts in with '
+            '/nu-login: a code to approve in the browser, nothing to paste.'
         ))
     # 2 is "could not ask" — the network, the tracker itself. Silence.
     if answer.returncode != 1:

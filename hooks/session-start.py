@@ -57,8 +57,8 @@ def main() -> int:
             'nuclock: the queue could not be read — the scripts that read it have no '
             'credential. The MCP tools are unaffected, so ASK the tracker through them '
             'rather than assuming the backlog is empty. The scripts (`nu-queue`, '
-            '`nu-start`, `nu-finish`) and the timer hooks stay off until NUCLOCK_API_KEY '
-            'is set — a `write` key with no abilities is enough.',
+            '`nu-start`, `nu-finish`) and the timer hooks stay off until the person signs '
+            'them in with /nu-login — offer it.',
         )
     if answer.returncode != 0 or not answer.stdout.strip():
         return 0

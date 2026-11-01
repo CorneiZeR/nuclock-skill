@@ -16,7 +16,8 @@ WORK=$(mktemp -d)
 RUN=${WORK##*/}  # from the random scratch directory: a PID is reused, this is not
 trap 'rm -rf "$WORK"' EXIT
 # The hooks keep session markers in one of these; a run must not leave them in the real ones.
-export XDG_RUNTIME_DIR="$WORK" TMPDIR="$WORK/tmp"
+# And the sign-in lives under XDG_STATE_HOME: a real one would answer the credential checks.
+export XDG_RUNTIME_DIR="$WORK" TMPDIR="$WORK/tmp" XDG_STATE_HOME="$WORK/state"
 mkdir -m 700 "$TMPDIR"
 
 failures=0
@@ -193,6 +194,13 @@ echo 'where the credential is looked for'
 
 looked=$(WORK="$WORK" python3 tests/credential_lookup.py)
 check 'the provider is named as the reason, and both scopes are read' 'provider nuc_local nuc_top' "$looked"
+
+echo 'signing in (NUC-602)'
+
+# Its own checks, printed in this format; its exit status is how many failed.
+signin=0
+python3 tests/signin.py || signin=$?
+failures=$((failures + signin))
 
 echo
 if [ "$failures" -eq 0 ]; then

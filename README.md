@@ -84,34 +84,65 @@ Installed with the plugin, so the scripts need no path and no remembering:
 | `/nu-queue` | what is running, what is in flight, what is next — blocked rows marked |
 | `/nu-start NUC-142` | blockers → `in_progress` → timer, refusing rather than guessing |
 | `/nu-finish NUC-142` | stop the clock; `--done` closes it when nothing is still open |
+| `/nu-login` | sign the scripts and hooks in: a link and a code to approve in the browser |
+| `/nu-logout` | sign them out: revoked at the provider, removed here |
 
 Both writing commands take `--anyway` for the case where the person can see
 the reason is stale — and it is written into the commands that an assistant
 must not reach for that flag on its own: a retry is not a decision.
 
-## The key
+## Signing in
 
-The scripts use the person's OWN credential. It is looked for in this order,
-and nothing here writes a key anywhere, prints one, or passes one as a
-command-line argument (an argument is visible in `ps` to everybody on the
-machine):
+The scripts act as the person, with the person's OWN credential — and they
+sign in the way a command line does, so nobody pastes a token anywhere:
 
-1. `NUCLOCK_API_KEY`;
-2. the nuclock MCP server's `Authorization` header in the Claude Code config —
-   `$CLAUDE_CONFIG_DIR/.claude.json` when that variable is set, and
-   `~/.claude.json`, in the person's own scope and in each project's, because
-   `claude mcp add` writes the project one by default.
+```
+/nu-login                                   # in Claude Code
+skills/nuclock/scripts/nu-login.py          # in a terminal
+```
 
-**An assistant signed in through an identity provider leaves a script
-nothing.** That connection's token lives inside Claude Code, not in the config,
-so there is no header to borrow — and then the scripts need a key of their own
-in `NUCLOCK_API_KEY`. A `write` key with **no abilities** is enough: everything
-these scripts touch — tasks, timers, time entries — is ungated, while people,
-seats, projects and integrations need an ability the key was minted with.
+It runs the device authorization grant (RFC 8628): it prints a link and a short
+code, the person approves on the identity provider's own page — the same
+consent page an assistant gets, asking the same two rights, `nuclock:read` and
+`nuclock:write` — and the script collects the token. The provider is not
+written into the plugin: the API names it in its protected-resource metadata
+(`/.well-known/oauth-protected-resource/mcp`), so the same plugin signs in to
+any organisation running nuclock. `NUCLOCK_ISSUER` overrides it, and
+`NUCLOCK_CLIENT_ID` the client (`nuclock-cli`).
 
-A key carries its owner's access, and the scripts say so rather than retrying:
-a read-only key fails a write because of its scope, and "permission denied" is
-an answer about what that person may see.
+**What is kept, and where.** `$XDG_STATE_HOME/nuclock/token.json`
+(`~/.local/state/nuclock/token.json` by default), created `0600` in a `0700`
+directory: the access token, when it ends, the refresh token, and the API it
+was issued for — a token for one organisation is never offered to another's.
+A file rather than the macOS keychain, because the plugin runs on Linux too. A
+spent access token is renewed silently, and a 401 renews it once and sends the
+call again; a refresh the provider refuses ends the sign-in, and the scripts
+say to sign in again rather than offering the dead token on every call.
+
+**Signing out** is `/nu-logout`: the refresh token is revoked at the provider,
+which ends that session there, and the file is removed. A provider that cannot
+be reached still loses the file, and that is said.
+
+**The order a credential is looked for in** — and nothing here prints one or
+passes one as a command-line argument (an argument is visible in `ps` to
+everybody on the machine):
+
+1. `NUCLOCK_API_KEY` — CI has no browser, so a service key there wins;
+2. the sign-in `nu-login` cached;
+3. the nuclock MCP server's `Authorization` header in the Claude Code config,
+   for whoever still connects with a key — `$CLAUDE_CONFIG_DIR/.claude.json`
+   when that variable is set, and `~/.claude.json`, in the person's own scope
+   and in each project's, because `claude mcp add` writes the project one by
+   default.
+
+An assistant signed in through the identity provider leaves nothing to borrow:
+its token lives inside Claude Code, which is another application's private
+store, and reading it would break the day it changed shape. The scripts sign
+in for themselves instead.
+
+A credential carries its owner's access, and the scripts say so rather than
+retrying: a read-only one fails a write because of its scope, and "permission
+denied" is an answer about what that person may see.
 
 **Three exit statuses, because the hooks must tell them apart.** `0` and `1`
 are answers; `2` means the tracker could not be ASKED — a blink, and the hooks
@@ -119,7 +150,7 @@ stay silent, because "your timer is off" when the network hiccupped teaches
 people to ignore the warning. `3` means no credential was found at all, which
 is a gap somebody can close: the editing hook says it once per session and the
 session's start tells the assistant, so an unreadable queue is not mistaken for
-an empty backlog. Those two shared `2` once, and the day the assistant moved to
+an empty backlog; both point at `/nu-login`. Those two shared `2` once, and the day the assistant moved to
 the identity provider the whole plugin went off without a word.
 
 ## The scripts
@@ -154,7 +185,7 @@ skills/nuclock/scripts/nu-untracked.py --days 14 --repo ../nuclock_back
 ## Tests
 
 ```bash
-tests/run.sh          # the hooks
+tests/run.sh          # the hooks, the credential lookup and the sign-in (tests/signin.py)
 tests/commands.sh     # nu-start and nu-finish
 tests/tools.py        # every tool call the documents show
 ```
