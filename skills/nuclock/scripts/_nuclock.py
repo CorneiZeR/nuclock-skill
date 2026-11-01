@@ -255,7 +255,9 @@ def keep(endpoints: dict, answer: dict) -> None:
         'revocation_endpoint': endpoints.get('revocation_endpoint', ''),
         'access_token': answer['access_token'],
         'expires_at': time.time() + float(answer.get('expires_in') or 0),
-        'refresh_token': answer.get('refresh_token') or '',
+        # RFC 6749 §6: a renewal may come without a new refresh token, and then
+        # the one already held is still the one to use.
+        'refresh_token': answer.get('refresh_token') or endpoints.get('refresh_token') or '',
     })
 
 

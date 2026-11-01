@@ -182,6 +182,13 @@ def main() -> int:
     check('a declined sign-in is an answer, not a crash', (1, True), (code, 'declined' in said))
 
     fresh(issued('a2'))
+    run(login, '--start')
+    STATE['token'] = [(503, {})]
+    code, _ = run(login, '--wait')
+    check('a provider that blinks while it waits keeps the code for another --wait',
+          (2, True), (code, nu.device_file().exists()))
+
+    fresh(issued('a2'))
     code, said = run(login, '--start')
     check('--start prints the code and returns without polling', (0, [], True),
           (code, slept, nu.device_file().exists()))
@@ -210,6 +217,14 @@ def main() -> int:
           (renewal.get('grant_type'), renewal.get('refresh_token')))
     check('and the renewed one is kept, 0600', ('r3', '0o600'),
           (json.loads(nu.token_file().read_text())['refresh_token'], oct(stat.S_IMODE(nu.token_file().stat().st_mode))))
+
+    saved = json.loads(nu.token_file().read_text())
+    saved['expires_at'] = time.time() - 1
+    nu.token_file().write_text(json.dumps(saved))
+    STATE['token'] = [(200, {'access_token': 'a3', 'expires_in': 300})]
+    nu.key()
+    check('a renewal that brings no new refresh token keeps the old one', 'r3',
+          json.loads(nu.token_file().read_text())['refresh_token'])
 
     STATE['token'] = [issued('a4', 'r4')]
     STATE['api_401'] = 1

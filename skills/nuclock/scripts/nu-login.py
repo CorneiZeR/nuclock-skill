@@ -94,13 +94,14 @@ def wait(pending: dict | None = None) -> str:
         if error == 'slow_down':
             interval += SLOW_DOWN
             continue
+        # A provider blinking is not the code dying: kept, so `--wait` can be run again.
+        if status >= 500:
+            raise nu.ApiError(f'{status} from {pending["token_endpoint"]}')
         nu.forget_device()
         if error == 'expired_token':
             raise Declined('the code ran out before it was approved — run /nu-login again')
         if error == 'access_denied':
             raise Declined('the sign-in was declined at the provider')
-        if status >= 500:
-            raise nu.ApiError(f'{status} from {pending["token_endpoint"]}')
         raise Declined(f'the provider refused the sign-in: {answer.get("error_description") or error or status}')
     nu.keep(pending, answer)
     nu.forget_device()
