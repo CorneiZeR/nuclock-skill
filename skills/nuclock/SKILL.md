@@ -136,6 +136,11 @@ scripts/nu-finish.py NUC-142     # timer off, status left alone
 scripts/nu-finish.py NUC-142 --done   # …and closed, if nothing is open
 ```
 
+The scripts act as the person and sign in on their own: `scripts/nu-login.py`
+(`/nu-login`) prints a link and a code, the person approves it in the browser,
+and the token is cached and renewed from then on. Exit 3 from any script means
+nobody signed them in — offer `/nu-login`; never ask for a token in the chat.
+
 `nu-start` refuses a blocked task and refuses to replace a timer that is
 already running — which one it should be is a decision, and it prints what is
 open instead of guessing. `nu-finish` stops the clock and leaves the status
