@@ -756,6 +756,33 @@
     "title": "check_expense_balanceArguments",
     "type": "object"
   },
+  "check_expense_paid_until": {
+    "additionalProperties": false,
+    "properties": {
+      "expense_id": {
+        "description": "Expense id",
+        "title": "Expense Id",
+        "type": "string"
+      },
+      "on": {
+        "description": "The day it was read, YYYY-MM-DD — today or earlier",
+        "title": "On",
+        "type": "string"
+      },
+      "paid_until": {
+        "description": "The day the provider's dashboard says the service is paid until, YYYY-MM-DD",
+        "title": "Paid Until",
+        "type": "string"
+      }
+    },
+    "required": [
+      "expense_id",
+      "on",
+      "paid_until"
+    ],
+    "title": "check_expense_paid_untilArguments",
+    "type": "object"
+  },
   "close_performer": {
     "additionalProperties": false,
     "properties": {
@@ -1560,9 +1587,24 @@
       },
       "period": {
         "default": "monthly",
-        "description": "How often it comes round: one_off, monthly, annual — or usage, a deposit drawn on by traffic with no charge day, paid from the deposit, charged by each balance reading",
+        "description": "How often it comes round: one_off, monthly, annual, days (every `period_days` days — a provider counting 30 days or 4 weeks rather than months) — or usage, a deposit drawn on by traffic with no charge day, paid from the deposit, charged by each balance reading",
         "title": "Period",
         "type": "string"
+      },
+      "period_days": {
+        "anyOf": [
+          {
+            "maximum": 366,
+            "minimum": 1,
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "With period `days`: how many days one cycle lasts (30, 28)",
+        "title": "Period Days"
       },
       "shares": {
         "description": "Each project and how it is billed, as [{\"project_id\": \"…\", \"billing\": \"percent\", \"percent\": 100}, {\"project_id\": \"…\", \"billing\": \"fixed\", \"price\": 4}, {\"project_id\": \"…\", \"billing\": \"none\"}]. `percent` is a whole per cent of the provider bill plus its payment fee — 100 the bill, 105 the bill and 5% on top — with no upper bound and NOTHING has to add up across projects. `fixed` is a price per charge in the currency of the expense, whatever the bill was. `none` is our own cost, never billed. Which part of the bill each project accounts for follows from what each is billed and is not typed",
@@ -8325,8 +8367,23 @@
           }
         ],
         "default": null,
-        "description": "one_off, monthly, annual, or usage (no charge day; the next charge is cleared)",
+        "description": "one_off, monthly, annual, days (with `period_days`), or usage (no charge day; the next charge is cleared)",
         "title": "Period"
+      },
+      "period_days": {
+        "anyOf": [
+          {
+            "maximum": 366,
+            "minimum": 1,
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "With period `days`: how many days one cycle lasts",
+        "title": "Period Days"
       },
       "shares": {
         "anyOf": [
