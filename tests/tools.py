@@ -11,6 +11,8 @@ teaching the old shape, and a model that followed them was refused.
 
 * every `name(args)` naming a tool, in every document and script, uses only
   arguments the tool has — and, unless it elides with `…`, all it requires;
+  a `group={key: …}` argument is checked down to its keys, since a field that
+  moved into a group is refused at its old place;
 * the copy is what the live server publishes, so a server change that was
   never carried here fails this test instead of the next person who follows
   the documents. Without a key or a network the live check says it was
@@ -43,6 +45,33 @@ def documents() -> list[pathlib.Path]:
     return found
 
 
+def split_top(raw: str) -> list[str]:
+    """Split call arguments at the commas that are not inside a `{…}` or `[…]` value."""
+    parts, depth, start = [], 0, 0
+    for at, char in enumerate(raw):
+        if char in '{[':
+            depth += 1
+        elif char in '}]':
+            depth -= 1
+        elif char == ',' and depth == 0:
+            parts.append(raw[start:at])
+            start = at + 1
+    parts.append(raw[start:])
+    return [part.strip() for part in parts if part.strip()]
+
+
+def group_problems(tool: str, arg: str, value: str, schema: dict) -> list[str]:
+    """Check the keys of a `group={key: …}` value against that group's own fields."""
+    if not (value.startswith('{') and value.endswith('}')):
+        return []
+    fields = schema.get('properties', {}).get(arg, {}).get('properties')
+    if fields is None:
+        return [f'{tool}: {arg} is not a group of fields']
+    keys = [item.split(':')[0].strip() for item in split_top(value[1:-1]) if item not in ELIDED]
+    unknown = [key for key in keys if key not in fields]
+    return [f'{tool}: {arg} has no {", ".join(unknown)}'] if unknown else []
+
+
 def call_problems() -> tuple[int, list[str]]:
     names = '|'.join(sorted(SNAPSHOT, key=len, reverse=True))
     pattern = re.compile(rf'(?<![\w.])(?:mcp__nuclock__)?({names})\(([^()]*)\)')
@@ -54,17 +83,20 @@ def call_problems() -> tuple[int, list[str]]:
             tool, raw = match.group(1), match.group(2)
             where = f'{path.relative_to(ROOT)}:{text.count(chr(10), 0, match.start()) + 1}  {tool}(…)'
             schema = SNAPSHOT[tool]
+            parts = split_top(raw.replace('\n', ' '))
             given = []
-            for part in raw.replace('\n', ' ').split(','):
-                part = part.strip()
-                if not part or part in ELIDED:
+            for part in parts:
+                if part in ELIDED:
                     continue
                 # `a | b` offers a choice between two arguments.
-                given += [alt.split('=')[0].strip() for alt in part.split('|')]
+                for alt in part.split('|'):
+                    arg, _, value = alt.partition('=')
+                    given.append(arg.strip())
+                    problems += [f'{where}: {problem}' for problem in group_problems(tool, arg.strip(), value.strip(), schema)]
             unknown = [arg for arg in given if arg not in schema.get('properties', {})]
             if unknown:
                 problems.append(f'{where}: {tool} takes no {", ".join(unknown)}')
-            if not ELIDED & {p.strip() for p in raw.split(',')}:
+            if not ELIDED & set(parts):
                 missing = [arg for arg in schema.get('required', ()) if arg not in given]
                 if missing:
                     problems.append(f'{where}: leaves out required {", ".join(missing)}')

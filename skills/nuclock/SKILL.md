@@ -40,11 +40,17 @@ decides.
 
 ## Reading the queue
 
-`list_tasks(mine=true, status='todo', sort='rank')` is "what is next", in the
+A tool with many arguments takes them in groups, one level deep:
+`filters={…}` for which tasks, `paging={limit, page}`, `details={…}` /
+`changes={…}` for what a task is or becomes, `period={…}` for a report's
+window. A group is an object; every field in it is optional unless the tool's
+schema says otherwise, and leaving the whole group out means "no narrowing".
+
+`list_tasks(filters={mine: true, status: 'todo'}, sort='rank')` is "what is next", in the
 order somebody arranged rather than in the order things were created. Two more
 that answer real questions:
 
-* `list_tasks(mine=true, status='in_progress')` — what is in flight. More than
+* `list_tasks(filters={mine: true, status: 'in_progress'})` — what is in flight. More than
   two rows here is usually a lie: work was put down and the status never moved.
 * `my_running_timer()` — what is being tracked RIGHT NOW, across every project.
   Ask it before starting anything; only one timer may run per person, and the
@@ -101,7 +107,7 @@ either useful or a list nobody reads.
 ## Creating a task
 
 ```
-create_task(performer_id=…, title=…, description=…, status='todo')
+create_task(performer_id=…, title=…, description=…, details={status: 'todo'})
 ```
 
 * **A title says what changes for a person**, not which file moves: "Tasks stay
